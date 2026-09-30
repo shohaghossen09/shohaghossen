@@ -11,6 +11,10 @@ import {
   ChevronDown,
   Briefcase,
   Sliders,
+  Award,
+  Layers,
+  CheckCircle2,
+  Compass,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { ContactModal } from "@/components/modals/ContactModal";
@@ -26,11 +30,11 @@ interface Station {
 
 // 6 Stations strictly flanking the winding highway (road is 100% unobstructed)
 const STATIONS: Station[] = [
-  { id: "origin", label: "Origin", coordX: 220, coordY: 520, side: "left" },
-  { id: "craft", label: "Philosophy & Craft", coordX: 780, coordY: 1350, side: "right" },
-  { id: "tech", label: "Creative Engineering", coordX: 220, coordY: 2200, side: "left" },
-  { id: "track-record", label: "Flagship Products", coordX: 780, coordY: 3050, side: "right" },
-  { id: "methodology", label: "Work Methodology", coordX: 220, coordY: 3900, side: "left" },
+  { id: "origin", label: "Origin & Vision", coordX: 220, coordY: 520, side: "left" },
+  { id: "craft", label: "Architecture & UI", coordX: 780, coordY: 1350, side: "right" },
+  { id: "tech", label: "Full-Stack Tech", coordX: 220, coordY: 2200, side: "left" },
+  { id: "track-record", label: "Featured Work", coordX: 780, coordY: 3050, side: "right" },
+  { id: "methodology", label: "Project Leadership", coordX: 220, coordY: 3900, side: "left" },
   { id: "destination", label: "Parking Bay", coordX: 220, coordY: 4650, side: "left" },
 ];
 
@@ -138,7 +142,7 @@ export default function AboutPage() {
         if (p.x < -10) p.x = width + 10;
         if (p.x > width + 10) p.x = -10;
 
-        ctx.fillStyle = `rgba(180, 160, 140, ${p.alpha})`;
+        ctx.fillStyle = `rgba(252, 249, 244, ${p.alpha})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
@@ -293,77 +297,70 @@ export default function AboutPage() {
       ref={containerRef}
       className="relative w-full min-h-screen text-stone-900 selection:bg-stone-900 selection:text-white overflow-x-hidden font-sans"
       style={{
-        background: "radial-gradient(ellipse at 50% 30%, #faf8f5 0%, #f7f4ee 55%, #ede8de 100%)",
+        background: "radial-gradient(ellipse at 50% 45%, #b8aca0 0%, #aa9e92 50%, #998e83 100%)",
       }}
     >
       {/* CSS Keyframe Animations for Living Landscape (River, Boat, Train, Turbines, Birds, Clouds) */}
       <style jsx global>{`
         @keyframes riverWaterFlow {
           0% { stroke-dashoffset: 0; }
-          100% { stroke-dashoffset: -140; }
-        }
-        @keyframes boatCruiseAlongRiver {
-          0% { transform: translate(960px, 1720px) rotate(-16deg); }
-          50% { transform: translate(500px, 1800px) rotate(-8deg); }
-          100% { transform: translate(40px, 1860px) rotate(-4deg); }
-        }
-        @keyframes expressTrainRun {
-          0% { transform: translate(-300px, 2640px) rotate(-7deg); }
-          100% { transform: translate(1300px, 2520px) rotate(-7deg); }
+          100% { stroke-dashoffset: -120; }
         }
         @keyframes cloudDriftSlow1 {
-          0% { transform: translateX(-180px); }
-          100% { transform: translateX(1180px); }
+          0% { transform: translateX(-240px); }
+          100% { transform: translateX(1240px); }
         }
         @keyframes cloudDriftSlow2 {
-          0% { transform: translateX(1180px); }
-          100% { transform: translateX(-280px); }
+          0% { transform: translateX(1240px); }
+          100% { transform: translateX(-320px); }
         }
-        @keyframes birdFlockFly {
-          0% { transform: translate(-100px, 680px); }
-          100% { transform: translate(1100px, 600px); }
+        @keyframes cloudDriftSlow3 {
+          0% { transform: translateX(-300px); }
+          100% { transform: translateX(1200px); }
         }
-        @keyframes birdWingFlap {
+        @keyframes birdWingFlapSmooth {
           0%, 100% { transform: scaleY(1); }
-          50% { transform: scaleY(0.35); }
+          50% { transform: scaleY(0.28); }
         }
         @keyframes turbineRotorSpin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
+        @keyframes boatSway {
+          0%, 100% { transform: rotate(0deg); }
+          50% { transform: rotate(2.5deg); }
+        }
         .anim-river-flow {
           stroke-dasharray: 20 14;
-          animation: riverWaterFlow 2.6s linear infinite;
+          animation: riverWaterFlow 2.4s linear infinite;
         }
-        .anim-boat-cruise {
-          animation: boatCruiseAlongRiver 24s linear infinite;
+        .anim-cloud-top-1 {
+          animation: cloudDriftSlow1 55s linear infinite;
         }
-        .anim-train-run {
-          animation: expressTrainRun 13s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        .anim-cloud-top-2 {
+          animation: cloudDriftSlow2 70s linear infinite;
         }
-        .anim-cloud-1 {
-          animation: cloudDriftSlow1 65s linear infinite;
-        }
-        .anim-cloud-2 {
-          animation: cloudDriftSlow2 80s linear infinite;
-        }
-        .anim-bird-flock {
-          animation: birdFlockFly 26s linear infinite;
+        .anim-cloud-top-3 {
+          animation: cloudDriftSlow3 85s linear infinite;
         }
         .anim-bird-wing {
-          animation: birdWingFlap 0.32s ease-in-out infinite;
+          animation: birdWingFlapSmooth 0.38s ease-in-out infinite;
           transform-origin: center;
         }
         .anim-turbine {
-          animation: turbineRotorSpin 4.5s linear infinite;
+          animation: turbineRotorSpin 4.2s linear infinite;
+          transform-origin: 0px 0px;
+        }
+        .anim-boat-body {
+          animation: boatSway 3s ease-in-out infinite;
           transform-origin: 0px 0px;
         }
       `}</style>
 
-      {/* Fixed Ambient Particles Canvas */}
+      {/* Fixed Ambient Particles Canvas matching Home page */}
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"
+        className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-40"
         aria-hidden="true"
       />
 
@@ -415,20 +412,20 @@ export default function AboutPage() {
 
       {/* Main 2D Highway Route & Checkpoints Layer */}
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-36 z-10">
-        {/* Route Intro Header: Clean & Bold, matching Home page aesthetic */}
+        {/* Route Intro Header: Clean & Editorial, matching Home page aesthetic */}
         <section className="text-center max-w-3xl mx-auto pt-2 pb-6 sm:pb-8">
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-stone-950 uppercase leading-tight mb-3">
-            THE CRAFT BEHIND
+            THE JOURNEY BEHIND
             <span className="block text-amber-900 italic font-serif lowercase text-3xl sm:text-5xl lg:text-6xl">
-              the digital experience.
+              full-stack engineering.
             </span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal max-w-xl mx-auto mb-3">
-            Drive through the portfolio route below. Each milestone card sits cleanly on the roadside, leaving an unobstructed scenic highway for the car to navigate toward the final parking stall.
+          <p className="text-xs sm:text-sm text-stone-800 leading-relaxed font-normal max-w-xl mx-auto mb-3">
+            Drive through the milestones below. Each card sits cleanly on the roadside, leaving the highway corridor 100% unobstructed for the car to navigate toward the final parking stall.
           </p>
 
-          <div className="flex items-center justify-center gap-2 text-stone-700 text-[11px] font-mono animate-bounce">
+          <div className="flex items-center justify-center gap-2 text-stone-800 text-[11px] font-mono animate-bounce font-medium">
             <ChevronDown className="w-3.5 h-3.5 text-stone-900" />
             <span>SCROLL DOWN TO DRIVE</span>
           </div>
@@ -459,19 +456,20 @@ export default function AboutPage() {
                 <stop offset="100%" stopColor="#fef9c3" stopOpacity="0" />
               </linearGradient>
 
-              {/* River Water Gradient */}
+              {/* River Water Deep & Shimmer Gradient */}
               <linearGradient id="riverWater" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.75" />
-                <stop offset="50%" stopColor="#0284c7" stopOpacity="0.85" />
-                <stop offset="100%" stopColor="#0369a1" stopOpacity="0.9" />
+                <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.85" />
+                <stop offset="45%" stopColor="#0284c7" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#0369a1" stopOpacity="0.95" />
               </linearGradient>
 
-              {/* High-Speed Train Metallic Body Gradient */}
-              <linearGradient id="trainBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f8fafc" />
-                <stop offset="45%" stopColor="#e2e8f0" />
-                <stop offset="55%" stopColor="#0284c7" />
-                <stop offset="100%" stopColor="#0f172a" />
+              {/* High-Speed Bullet Train Aerodynamic Metallic Body */}
+              <linearGradient id="bulletTrainBody" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="40%" stopColor="#e2e8f0" />
+                <stop offset="50%" stopColor="#0284c7" />
+                <stop offset="85%" stopColor="#0f172a" />
+                <stop offset="100%" stopColor="#020617" />
               </linearGradient>
 
               {/* Hyper-Realistic Metallic Car Chassis Gradient */}
@@ -498,103 +496,119 @@ export default function AboutPage() {
                 <stop offset="100%" stopColor="#1c1917" />
               </radialGradient>
 
-              {/* Shadow Filter for 2D Vehicles and Objects */}
+              {/* Shadow Filters for Realistic 2D Depth */}
               <filter id="carRealisticShadow" x="-50%" y="-50%" width="200%" height="200%">
-                <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#000000" floodOpacity="0.4" />
+                <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#000000" floodOpacity="0.45" />
               </filter>
 
               <filter id="landscapeShadow" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#000000" floodOpacity="0.2" />
+                <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#000000" floodOpacity="0.25" />
+              </filter>
+
+              <filter id="cloudShadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="12" stdDeviation="12" floodColor="#1c1917" floodOpacity="0.18" />
               </filter>
             </defs>
 
             {/* ============================================================== */}
-            {/* LIVING LANDSCAPE LAYER: RIVER, BOAT, RAILWAY, TRAIN, CLOUDS    */}
+            {/* 1. SCENIC WINDING RIVER & SMOOTH CRUISING YACHT                */}
             {/* ============================================================== */}
-
-            {/* 1. SCENIC RIVER (Winding water body crossing at Y ~ 1700 - 1880) */}
             <g id="scenic-river">
-              {/* Riverbed Shoreline (Sand / Mud banks) */}
+              {/* Riverbed Shoreline (Sandy Earth Banks) */}
               <path
-                d="M 1040 1710 C 820 1740, 680 1810, 480 1820 C 300 1830, 160 1870, -40 1880 L -40 1960 C 160 1950, 300 1910, 480 1900 C 680 1890, 820 1820, 1040 1790 Z"
-                fill="#d8cebf"
-                opacity="0.75"
+                d="M 1040 1705 C 820 1735, 680 1805, 480 1815 C 300 1825, 160 1865, -40 1875 L -40 1970 C 160 1960, 300 1920, 480 1910 C 680 1900, 820 1830, 1040 1800 Z"
+                fill="#8f8477"
+                opacity="0.65"
               />
-              {/* Deep Water Flow */}
+              {/* Deep Water Channel */}
               <path
-                d="M 1040 1725 C 820 1755, 680 1825, 480 1835 C 300 1845, 160 1885, -40 1895 L -40 1945 C 160 1935, 300 1895, 480 1885 C 680 1875, 820 1805, 1040 1775 Z"
+                d="M 1040 1720 C 820 1750, 680 1820, 480 1830 C 300 1840, 160 1880, -40 1890 L -40 1950 C 160 1940, 300 1900, 480 1890 C 680 1880, 820 1810, 1040 1780 Z"
                 fill="url(#riverWater)"
                 filter="url(#landscapeShadow)"
               />
-              {/* Animated Water Waves Current Lines */}
+              {/* Animated Flowing Water Currents */}
               <path
-                d="M 1020 1745 C 810 1775, 670 1845, 470 1855 C 290 1865, 150 1905, -20 1915"
+                d="M 1020 1740 C 810 1770, 670 1840, 470 1850 C 290 1860, 150 1900, -20 1910"
                 fill="none"
                 stroke="#e0f2fe"
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeLinecap="round"
-                opacity="0.85"
+                opacity="0.9"
                 className="anim-river-flow"
               />
               <path
-                d="M 1000 1765 C 790 1795, 650 1865, 450 1875 C 270 1885, 130 1925, -20 1935"
+                d="M 1000 1760 C 790 1790, 650 1860, 450 1870 C 270 1880, 130 1920, -20 1930"
                 fill="none"
                 stroke="#bae6fd"
-                strokeWidth="1.6"
+                strokeWidth="1.8"
                 strokeLinecap="round"
-                opacity="0.7"
+                opacity="0.75"
                 className="anim-river-flow"
               />
 
-              {/* MOVING 2D BOAT ON RIVER with Wake Waves (Continuously cruising) */}
-              <g className="anim-boat-cruise">
-                {/* Boat Stern V-Wake Water Trail */}
-                <path
-                  d="M 24 -4 L 55 -14 M 24 4 L 55 14"
-                  stroke="#ffffff"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  opacity="0.7"
+              {/* PURE SVG NATIVE ANIMATEMOTION: Boat follows the EXACT River Bezier Path with Auto-Rotation */}
+              <g>
+                <animateMotion
+                  path="M 1040 1750 C 820 1780, 680 1850, 480 1860 C 300 1870, 160 1910, -60 1920"
+                  rotate="auto"
+                  dur="24s"
+                  repeatCount="indefinite"
                 />
-                <circle cx="28" cy="0" r="4" fill="#e0f2fe" opacity="0.6" />
+                {/* Boat Group with Realistic Shape and Stern V-Wake */}
+                <g className="anim-boat-body" transform="scale(-1, 1)">
+                  {/* Expanding Stern V-Wake Water Foam */}
+                  <path
+                    d="M 22 -4 L 55 -16 M 22 4 L 55 16 M 35 -7 L 70 -22 M 35 7 L 70 22"
+                    stroke="#ffffff"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    opacity="0.8"
+                  />
+                  <ellipse cx="26" cy="0" rx="6" ry="3" fill="#e0f2fe" opacity="0.7" />
 
-                {/* Boat Hull Shadow */}
-                <ellipse cx="0" cy="2" rx="26" ry="8" fill="#000000" opacity="0.25" filter="url(#landscapeShadow)" />
+                  {/* Boat Shadow */}
+                  <ellipse cx="0" cy="3" rx="26" ry="9" fill="#000000" opacity="0.3" filter="url(#landscapeShadow)" />
 
-                {/* Sleek Cruiser Hull */}
-                <path
-                  d="M -24 0 C -18 -8, 12 -8, 22 -6 L 22 6 C 12 8, -18 8, -24 0 Z"
-                  fill="#ffffff"
-                  stroke="#0369a1"
-                  strokeWidth="1.5"
-                />
-                {/* Teak Wood Deck Accent */}
-                <rect x="-10" y="-4" width="22" height="8" rx="2" fill="#d97706" opacity="0.85" />
-                {/* Blue Cabin Windshield Roof */}
-                <rect x="-14" y="-3.5" width="10" height="7" rx="1.5" fill="#0284c7" />
-                {/* Bow Light */}
-                <circle cx="-22" cy="0" r="1.5" fill="#f59e0b" />
+                  {/* Sleek Cruiser Hull */}
+                  <path
+                    d="M -26 0 C -20 -9, 14 -9, 24 -7 L 24 7 C 14 9, -20 9, -26 0 Z"
+                    fill="#ffffff"
+                    stroke="#0284c7"
+                    strokeWidth="1.6"
+                  />
+                  {/* Teak Wood Deck Inlay */}
+                  <rect x="-10" y="-5" width="24" height="10" rx="2" fill="#d97706" opacity="0.85" />
+                  {/* Cabin with Tinted Curved Glass */}
+                  <path d="M -16 -4 L -2 -4 L 6 -2 L 6 2 L -2 4 L -16 4 Z" fill="#0284c7" />
+                  <rect x="-12" y="-3" width="10" height="6" rx="1.5" fill="#0f172a" />
+                  {/* Stainless Bow Railing & Nav Light */}
+                  <circle cx="-24" cy="0" r="1.8" fill="#f59e0b" />
+                  <circle cx="23" cy="-5" r="1.2" fill="#10b981" />
+                  <circle cx="23" cy="5" r="1.2" fill="#ef4444" />
+                </g>
               </g>
             </g>
 
-            {/* 2. SCENIC RAILWAY TRACK & MOVING HIGH-SPEED TRAIN (Crossing at Y ~ 2540 - 2640) */}
+            {/* ============================================================== */}
+            {/* 2. SCENIC RAILWAY TRACK & SMOOTH SHINKANSEN BULLET TRAIN       */}
+            {/* ============================================================== */}
             <g id="scenic-railway">
-              {/* Ballast Gravel Bed */}
-              <line x1="-60" y1="2640" x2="1060" y2="2520" stroke="#b0a89d" strokeWidth="20" strokeLinecap="round" />
+              {/* Ballast Stone Bed */}
+              <line x1="-80" y1="2640" x2="1080" y2="2520" stroke="#5a524a" strokeWidth="22" strokeLinecap="round" />
               
-              {/* Wooden Railway Ties */}
-              {Array.from({ length: 48 }).map((_, i) => {
-                const t = i / 47;
-                const x = -40 + t * 1080;
-                const y = 2635 - t * 115;
+              {/* Wooden Railroad Ties / Sleepers */}
+              {Array.from({ length: 50 }).map((_, i) => {
+                const t = i / 49;
+                const x = -60 + t * 1120;
+                const y = 2638 - t * 120;
                 return (
                   <line
                     key={`tie-${i}`}
                     x1={x - 1}
-                    y1={y - 8}
+                    y1={y - 9}
                     x2={x + 1}
-                    y2={y + 8}
-                    stroke="#44403c"
+                    y2={y + 9}
+                    stroke="#292524"
                     strokeWidth="4"
                     strokeLinecap="round"
                   />
@@ -602,157 +616,206 @@ export default function AboutPage() {
               })}
 
               {/* Steel Twin Rail Tracks */}
-              <line x1="-60" y1="2636" x2="1060" y2="2516" stroke="#d6d3d1" strokeWidth="2.5" />
-              <line x1="-60" y1="2644" x2="1060" y2="2524" stroke="#d6d3d1" strokeWidth="2.5" />
+              <line x1="-80" y1="2635" x2="1080" y2="2515" stroke="#e2e8f0" strokeWidth="2.5" />
+              <line x1="-80" y1="2645" x2="1080" y2="2525" stroke="#e2e8f0" strokeWidth="2.5" />
 
-              {/* MOVING HIGH-SPEED MODERN EXPRESS TRAIN */}
-              <g className="anim-train-run">
-                {/* Train Ground Shadow */}
-                <rect x="-170" y="-8" width="340" height="16" rx="6" fill="#000000" opacity="0.3" filter="url(#landscapeShadow)" />
-
-                {/* Locomotive (Front) */}
-                <path
-                  d="M 120 -6 L 165 -3 C 172 0, 172 0, 165 3 L 120 6 Z"
-                  fill="url(#trainBodyGrad)"
-                  stroke="#0284c7"
-                  strokeWidth="1.2"
+              {/* PURE SVG NATIVE ANIMATEMOTION: High-Speed Train locked onto Rail Track */}
+              <g>
+                <animateMotion
+                  path="M -220 2655 L 1220 2505"
+                  rotate="auto"
+                  dur="11s"
+                  repeatCount="indefinite"
                 />
-                {/* Locomotive Cab Windows */}
-                <path d="M 135 -4 L 155 -2 L 155 2 L 135 4 Z" fill="#0f172a" />
-                <circle cx="166" cy="0" r="2.5" fill="#fde047" />
+                {/* Train Group with 3 Articulated High-Speed Coaches */}
+                <g>
+                  {/* Train Ground Shadow */}
+                  <rect x="-170" y="-8" width="340" height="16" rx="6" fill="#000000" opacity="0.35" filter="url(#landscapeShadow)" />
 
-                {/* Car 1 */}
-                <rect x="35" y="-6" width="80" height="12" rx="3" fill="url(#trainBodyGrad)" stroke="#38bdf8" strokeWidth="1" />
-                <rect x="42" y="-3.5" width="66" height="7" rx="1.5" fill="#0f172a" />
-                <line x1="30" y1="0" x2="35" y2="0" stroke="#000000" strokeWidth="3" />
+                  {/* Aerodynamic Locomotive (Front) */}
+                  <path
+                    d="M 120 -7 L 172 -3 C 182 0, 182 0, 172 3 L 120 7 Z"
+                    fill="url(#bulletTrainBody)"
+                    stroke="#0284c7"
+                    strokeWidth="1.2"
+                  />
+                  {/* Driver Cockpit Windshield */}
+                  <path d="M 140 -5 L 165 -2 L 165 2 L 140 5 Z" fill="#0f172a" />
+                  {/* Front High-Beam Headlights */}
+                  <circle cx="174" cy="0" r="3" fill="#fde047" />
 
-                {/* Car 2 (Center Coach) */}
-                <rect x="-55" y="-6" width="80" height="12" rx="3" fill="url(#trainBodyGrad)" stroke="#38bdf8" strokeWidth="1" />
-                <rect x="-48" y="-3.5" width="66" height="7" rx="1.5" fill="#0f172a" />
-                <line x1="-60" y1="0" x2="-55" y2="0" stroke="#000000" strokeWidth="3" />
+                  {/* Passenger Coach 1 */}
+                  <rect x="35" y="-7" width="80" height="14" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
+                  <rect x="42" y="-4" width="66" height="8" rx="2" fill="#0f172a" />
+                  {/* Interior Window Glow */}
+                  <line x1="45" y1="0" x2="105" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.85" />
+                  {/* Articulated Coupler */}
+                  <line x1="30" y1="0" x2="35" y2="0" stroke="#000000" strokeWidth="4" />
 
-                {/* Car 3 (Rear Coach) */}
-                <rect x="-145" y="-6" width="80" height="12" rx="3" fill="url(#trainBodyGrad)" stroke="#38bdf8" strokeWidth="1" />
-                <rect x="-138" y="-3.5" width="66" height="7" rx="1.5" fill="#0f172a" />
-                <circle cx="-144" cy="-3" r="1.5" fill="#ef4444" />
-                <circle cx="-144" cy="3" r="1.5" fill="#ef4444" />
+                  {/* Passenger Coach 2 (Center) */}
+                  <rect x="-55" y="-7" width="80" height="14" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
+                  <rect x="-48" y="-4" width="66" height="8" rx="2" fill="#0f172a" />
+                  <line x1="-45" y1="0" x2="15" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.85" />
+                  {/* Roof Aerodynamic Pantograph */}
+                  <rect x="-20" y="-8.5" width="12" height="1.5" fill="#d97706" />
+                  <line x1="-60" y1="0" x2="-55" y2="0" stroke="#000000" strokeWidth="4" />
+
+                  {/* Passenger Coach 3 (Rear) */}
+                  <rect x="-145" y="-7" width="80" height="14" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
+                  <rect x="-138" y="-4" width="66" height="8" rx="2" fill="#0f172a" />
+                  <line x1="-135" y1="0" x2="-75" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.85" />
+                  {/* Rear Red LED Marker Lights */}
+                  <circle cx="-146" cy="-4" r="2" fill="#ef4444" />
+                  <circle cx="-146" cy="4" r="2" fill="#ef4444" />
+                </g>
               </g>
             </g>
 
-            {/* 3. SCENIC ROTATING WIND TURBINES (Windmills) */}
+            {/* ============================================================== */}
+            {/* 3. SCENIC ROTATING WIND TURBINES (Windmills)                   */}
+            {/* ============================================================== */}
             <g id="wind-turbines">
-              {/* Wind Turbine 1 (Left background at Y=1080) */}
+              {/* Wind Turbine 1 (Left flank at Y=1080) */}
               <g transform="translate(100, 1080)">
-                <ellipse cx="0" cy="18" rx="14" ry="5" fill="#000000" opacity="0.12" />
-                <circle cx="0" cy="0" r="4.5" fill="#d6d3d1" stroke="#a8a29e" strokeWidth="1" />
+                <ellipse cx="0" cy="20" rx="16" ry="6" fill="#000000" opacity="0.18" />
+                {/* Tapered White Mast Tower */}
+                <polygon points="-4,20 4,20 2,0 -2,0" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="0.8" />
+                {/* Central Nacelle Generator Hub */}
+                <circle cx="0" cy="0" r="5" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
+                {/* Spinning 3 Blades with Red Tips */}
                 <g className="anim-turbine">
-                  <path d="M 0 0 L 2 -32 L -2 -32 Z" fill="#ffffff" opacity="0.9" />
-                  <path d="M 0 0 L 29 16 L 27 20 Z" fill="#ffffff" opacity="0.9" />
-                  <path d="M 0 0 L -31 16 L -29 20 Z" fill="#ffffff" opacity="0.9" />
-                  <circle cx="0" cy="0" r="2.5" fill="#ef4444" />
+                  <path d="M 0 0 L 2.5 -38 L -2.5 -38 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
+                  <rect x="-2.5" y="-38" width="5" height="6" fill="#ef4444" />
+
+                  <path d="M 0 0 L 35 19 L 32.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
+                  <circle cx="34" cy="21" r="2.5" fill="#ef4444" />
+
+                  <path d="M 0 0 L -37 19 L -34.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
+                  <circle cx="-36" cy="21" r="2.5" fill="#ef4444" />
+
+                  <circle cx="0" cy="0" r="3" fill="#ef4444" />
                 </g>
               </g>
 
-              {/* Wind Turbine 2 (Right background at Y=3550) */}
+              {/* Wind Turbine 2 (Right flank at Y=3550) */}
               <g transform="translate(890, 3550)">
-                <ellipse cx="0" cy="18" rx="14" ry="5" fill="#000000" opacity="0.12" />
-                <circle cx="0" cy="0" r="4.5" fill="#d6d3d1" stroke="#a8a29e" strokeWidth="1" />
-                <g className="anim-turbine" style={{ animationDuration: "5.2s" }}>
-                  <path d="M 0 0 L 2 -32 L -2 -32 Z" fill="#ffffff" opacity="0.9" />
-                  <path d="M 0 0 L 29 16 L 27 20 Z" fill="#ffffff" opacity="0.9" />
-                  <path d="M 0 0 L -31 16 L -29 20 Z" fill="#ffffff" opacity="0.9" />
-                  <circle cx="0" cy="0" r="2.5" fill="#ef4444" />
+                <ellipse cx="0" cy="20" rx="16" ry="6" fill="#000000" opacity="0.18" />
+                <polygon points="-4,20 4,20 2,0 -2,0" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="0.8" />
+                <circle cx="0" cy="0" r="5" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
+                <g className="anim-turbine" style={{ animationDuration: "5.4s" }}>
+                  <path d="M 0 0 L 2.5 -38 L -2.5 -38 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
+                  <rect x="-2.5" y="-38" width="5" height="6" fill="#ef4444" />
+
+                  <path d="M 0 0 L 35 19 L 32.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
+                  <circle cx="34" cy="21" r="2.5" fill="#ef4444" />
+
+                  <path d="M 0 0 L -37 19 L -34.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
+                  <circle cx="-36" cy="21" r="2.5" fill="#ef4444" />
+
+                  <circle cx="0" cy="0" r="3" fill="#ef4444" />
                 </g>
               </g>
             </g>
 
-            {/* 4. ROADSIDE SCENIC TREES & FOLIAGE */}
-            <g id="roadside-trees" opacity="0.9">
+            {/* ============================================================== */}
+            {/* 4. ROADSIDE SCENIC TREES & FOLIAGE                             */}
+            {/* ============================================================== */}
+            <g id="roadside-trees">
               {/* Tree clusters near Station 1 (Left flank) */}
               <g transform="translate(130, 480)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="18" fill="#588157" />
-                <circle cx="-4" cy="-4" r="12" fill="#3a5a40" />
-                <circle cx="2" cy="2" r="6" fill="#a3b18a" />
+                <circle cx="0" cy="0" r="18" fill="#4d7c0f" />
+                <circle cx="-4" cy="-4" r="13" fill="#365314" />
+                <circle cx="3" cy="3" r="7" fill="#65a30d" />
               </g>
               <g transform="translate(90, 560)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="22" fill="#bc6c25" />
-                <circle cx="-5" cy="-5" r="14" fill="#99582a" />
+                <circle cx="0" cy="0" r="22" fill="#b45309" />
+                <circle cx="-5" cy="-5" r="15" fill="#78350f" />
+                <circle cx="4" cy="2" r="8" fill="#d97706" />
               </g>
 
               {/* Tree clusters near River (Right flank) */}
               <g transform="translate(890, 1680)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="24" fill="#3a5a40" />
-                <circle cx="-6" cy="-6" r="15" fill="#344e41" />
+                <circle cx="0" cy="0" r="24" fill="#365314" />
+                <circle cx="-6" cy="-6" r="16" fill="#14532d" />
+                <circle cx="4" cy="3" r="9" fill="#4d7c0f" />
               </g>
               <g transform="translate(930, 1750)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="20" fill="#588157" />
+                <circle cx="0" cy="0" r="20" fill="#4d7c0f" />
+                <circle cx="-4" cy="-3" r="12" fill="#15803d" />
               </g>
 
               {/* Tree clusters near Railway (Left flank) */}
               <g transform="translate(80, 2480)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="22" fill="#dda15e" />
-                <circle cx="-5" cy="-4" r="14" fill="#bc6c25" />
+                <circle cx="0" cy="0" r="22" fill="#ca8a04" />
+                <circle cx="-5" cy="-4" r="14" fill="#854d0e" />
               </g>
 
               {/* Tree clusters near Destination (Left flank) */}
               <g transform="translate(120, 4520)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="24" fill="#3a5a40" />
-                <circle cx="-5" cy="-5" r="16" fill="#283618" />
+                <circle cx="0" cy="0" r="24" fill="#14532d" />
+                <circle cx="-5" cy="-5" r="16" fill="#052e16" />
+                <circle cx="4" cy="2" r="8" fill="#166534" />
               </g>
             </g>
 
-            {/* 5. FLOCK OF FLYING BIRDS */}
-            <g className="anim-bird-flock">
-              <g transform="translate(0, 0)">
-                <path d="M -8 0 Q -4 -6 0 0 Q 4 -6 8 0" fill="none" stroke="#292524" strokeWidth="2" strokeLinecap="round" className="anim-bird-wing" />
-              </g>
-              <g transform="translate(24, 14)">
-                <path d="M -6 0 Q -3 -5 0 0 Q 3 -5 6 0" fill="none" stroke="#292524" strokeWidth="1.8" strokeLinecap="round" className="anim-bird-wing" />
-              </g>
-              <g transform="translate(16, -18)">
-                <path d="M -7 0 Q -3.5 -5 0 0 Q 3.5 -5 7 0" fill="none" stroke="#292524" strokeWidth="1.8" strokeLinecap="round" className="anim-bird-wing" />
-              </g>
-            </g>
-
-            {/* 6. DRIFTING AMBIENT 2D CLOUDS */}
-            <g className="anim-cloud-1" opacity="0.6">
-              <path
-                d="M 120 220 Q 140 190 170 200 Q 210 180 240 210 Q 270 200 280 230 Q 290 260 260 270 Q 230 280 180 270 Q 130 280 110 250 Q 100 230 120 220 Z"
-                fill="#ffffff"
-                filter="url(#landscapeShadow)"
+            {/* ============================================================== */}
+            {/* 5. SMOOTH SOARING BIRDS WITH NATURAL WING CURVES               */}
+            {/* ============================================================== */}
+            <g id="soaring-birds">
+              <animateMotion
+                path="M -120 720 C 300 680, 700 580, 1140 480"
+                rotate="auto"
+                dur="26s"
+                repeatCount="indefinite"
               />
-            </g>
-            <g className="anim-cloud-2" opacity="0.55">
-              <path
-                d="M 680 2850 Q 710 2820 740 2830 Q 780 2810 810 2840 Q 840 2830 850 2860 Q 860 2890 830 2900 Q 790 2910 740 2900 Q 690 2910 670 2880 Q 660 2860 680 2850 Z"
-                fill="#ffffff"
-                filter="url(#landscapeShadow)"
-              />
+              {/* Authentic V-Formation Flock with Ground Parallax Shadows */}
+              <g>
+                {/* Lead Bird */}
+                <g transform="translate(0, 0)">
+                  <path d="M -12 2 Q -6 -8 0 0 Q 6 -8 12 2 Q 6 -4 0 1 Q -6 -4 -12 2 Z" fill="#1c1917" className="anim-bird-wing" />
+                </g>
+                {/* Flank Bird 1 */}
+                <g transform="translate(-24, 18)">
+                  <path d="M -10 2 Q -5 -7 0 0 Q 5 -7 10 2 Q 5 -3 0 1 Q -5 -3 -10 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.08s" }} />
+                </g>
+                {/* Flank Bird 2 */}
+                <g transform="translate(-48, 36)">
+                  <path d="M -9 2 Q -4.5 -6 0 0 Q 4.5 -6 9 2 Q 4.5 -3 0 1 Q -4.5 -3 -9 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.16s" }} />
+                </g>
+                {/* Flank Bird 3 */}
+                <g transform="translate(-22, -18)">
+                  <path d="M -10 2 Q -5 -7 0 0 Q 5 -7 10 2 Q 5 -3 0 1 Q -5 -3 -10 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.12s" }} />
+                </g>
+                {/* Flank Bird 4 */}
+                <g transform="translate(-44, -36)">
+                  <path d="M -9 2 Q -4.5 -6 0 0 Q 4.5 -6 9 2 Q 4.5 -3 0 1 Q -4.5 -3 -9 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.2s" }} />
+                </g>
+              </g>
             </g>
 
             {/* ============================================================== */}
             {/* HIGHWAY ROADWAY, OVERPASSES & CAR PARKING BAY                   */}
             {/* ============================================================== */}
 
-            {/* Roadbed Outer Gravel / Curbs */}
+            {/* Roadbed Outer Curb / Shoulder */}
             <path
               d={pathD}
               fill="none"
-              stroke="#b5aba0"
+              stroke="#524a42"
               strokeWidth="48"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            {/* Concrete Road Curbs */}
+            {/* Concrete Road Edges */}
             <path
               d={pathD}
               fill="none"
-              stroke="#443e39"
+              stroke="#38322c"
               strokeWidth="40"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            {/* Dark Asphalt Driving Highway */}
+            {/* Dark Asphalt Highway Corridor */}
             <path
               d={pathD}
               fill="none"
@@ -849,7 +912,7 @@ export default function AboutPage() {
               );
             })}
 
-            {/* 6. Illustrated Car Parking Stall at Destination (coordY ~4650, coordX: 220) */}
+            {/* 6. Executive Reserved Parking Stall at Destination (coordY ~4650, coordX: 220) */}
             <g transform="translate(220, 4650)">
               {/* Paved Parking Apron */}
               <rect
@@ -862,7 +925,7 @@ export default function AboutPage() {
                 stroke="#d97706"
                 strokeWidth="2"
               />
-              {/* White Parking Stall Lines */}
+              {/* Crisp White Parking Stall Lines */}
               <line x1="-36" y1="-50" x2="-36" y2="45" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
               <line x1="36" y1="-50" x2="36" y2="45" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
               <line x1="-36" y1="45" x2="36" y2="45" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
@@ -879,7 +942,11 @@ export default function AboutPage() {
               {/* Front Parking Concrete Wheel Stop */}
               <rect x="-24" y="32" width="48" height="7" rx="2" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
 
-              {/* Painted Asphalt Text */}
+              {/* EV Charging Station Post */}
+              <rect x="38" y="24" width="10" height="18" rx="3" fill="#0284c7" />
+              <circle cx="43" cy="30" r="2" fill="#38bdf8" className="animate-pulse" />
+
+              {/* Painted Asphalt Text for Shohag Hossen */}
               <text
                 x="0"
                 y="-25"
@@ -902,7 +969,7 @@ export default function AboutPage() {
                 fontWeight="bold"
                 letterSpacing="1"
               >
-                ALEXANDER CHEN
+                SHOHAG HOSSEN
               </text>
 
               {/* Parking Space Badge */}
@@ -1039,6 +1106,38 @@ export default function AboutPage() {
               <circle cx="-30" cy="-5" r="1.2" fill="#78716c" stroke="#1c1917" strokeWidth="0.6" />
               <circle cx="-30" cy="5" r="1.2" fill="#78716c" stroke="#1c1917" strokeWidth="0.6" />
             </g>
+
+            {/* ============================================================== */}
+            {/* CLOUDS MOVING ON TOP OF EVERY OBJECT (User requested: Top Layer)*/}
+            {/* ============================================================== */}
+            <g id="clouds-top-overlay" opacity="0.75">
+              {/* Cloud 1 - Top Sky High Layer */}
+              <g className="anim-cloud-top-1">
+                <path
+                  d="M 120 220 Q 150 180 190 195 Q 240 170 280 205 Q 320 190 340 230 Q 350 270 310 285 Q 260 295 200 285 Q 140 295 110 260 Q 95 235 120 220 Z"
+                  fill="#ffffff"
+                  filter="url(#cloudShadow)"
+                />
+              </g>
+
+              {/* Cloud 2 - Mid Landscape High Layer */}
+              <g className="anim-cloud-top-2">
+                <path
+                  d="M 680 1950 Q 720 1910 760 1925 Q 810 1900 850 1935 Q 890 1920 910 1960 Q 920 2000 880 2015 Q 830 2025 770 2015 Q 710 2025 680 1990 Q 665 1965 680 1950 Z"
+                  fill="#ffffff"
+                  filter="url(#cloudShadow)"
+                />
+              </g>
+
+              {/* Cloud 3 - Lower Route High Layer */}
+              <g className="anim-cloud-top-3">
+                <path
+                  d="M 220 3350 Q 260 3310 300 3325 Q 350 3300 390 3335 Q 430 3320 450 3360 Q 460 3400 420 3415 Q 370 3425 310 3415 Q 250 3425 220 3390 Q 205 3365 220 3350 Z"
+                  fill="#ffffff"
+                  filter="url(#cloudShadow)"
+                />
+              </g>
+            </g>
           </svg>
 
           {/* ============================================================== */}
@@ -1057,28 +1156,28 @@ export default function AboutPage() {
               </div>
 
               <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
-                Born at the intersection of
-                <span className="block text-amber-800 font-serif lowercase italic text-2xl">
-                  mathematics and artistic expression.
+                Engineering scalable solutions
+                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                  from concept to high-volume production.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-700 leading-relaxed mb-5">
-                Over the past 8+ years, I&apos;ve helped venture-backed startups and category-defining leaders turn ambitious visions into fast, fluid, high-converting digital products.
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+                B.Sc. in Computer Science &amp; Engineering graduate from Dhaka International University. Proven track record leading projects across web, mobile, e-commerce, and cybersecurity threat detection platforms.
               </p>
 
               <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
                 <div className="p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
-                  <span className="block text-xl font-bold text-stone-900">8+</span>
-                  <span className="text-[11px] font-mono text-stone-500">Years Crafting</span>
+                  <span className="block text-xl font-bold text-stone-900">4+</span>
+                  <span className="text-[11px] font-mono text-stone-500">Years Experience</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
-                  <span className="block text-xl font-bold text-amber-800">100%</span>
-                  <span className="text-[11px] font-mono text-stone-500">Core Web Vitals</span>
+                  <span className="block text-xl font-bold text-amber-800">35+</span>
+                  <span className="text-[11px] font-mono text-stone-500">Projects Shipped</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
-                  <span className="block text-xl font-bold text-stone-900">3x</span>
-                  <span className="text-[11px] font-mono text-stone-500">Awwwards SOTD</span>
+                  <span className="block text-xl font-bold text-stone-900">100%</span>
+                  <span className="text-[11px] font-mono text-stone-500">Client Satisfaction</span>
                 </div>
               </div>
             </div>
@@ -1090,26 +1189,26 @@ export default function AboutPage() {
             style={{ top: "1180px" }}
           >
             <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
-              <div className="flex items-center gap-2 mb-2 text-amber-800 text-xs font-mono font-semibold">
+              <div className="flex items-center gap-2 mb-2 text-amber-900 text-xs font-mono font-semibold">
                 <Palette className="w-4 h-4" />
-                <span>CRAFT &amp; ART DIRECTION</span>
+                <span>DESIGN SYSTEMS &amp; ARCHITECTURE</span>
               </div>
 
               <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
-                Great code without taste is hollow.
-                <span className="block text-amber-800 font-serif lowercase italic text-2xl">
-                  Great design without speed is unusable.
+                Clean code meets intuitive UI.
+                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                  Built for performance, clarity and scale.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-700 leading-relaxed mb-5">
-                Every project begins with typographic structure, spatial rhythm, and narrative intent. I never use generic SaaS templates or off-the-shelf themes. Each interface is bespoke, designed to communicate authority and emotional resonance.
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+                Every interface is crafted with pixel precision in Figma, engineered with modern component architectures, and optimized for sub-second load times across mobile and desktop devices.
               </p>
 
               {/* Interactive Typography Playground Fragment */}
               <div className="p-4 rounded-2xl bg-white/95 border border-stone-200 shadow-sm mb-4">
                 <div className="flex items-center justify-between text-xs font-mono text-stone-500 mb-2">
-                  <span>TYPOGRAPHIC ARCHITECTURE</span>
+                  <span>UI TYPOGRAPHY PREVIEW</span>
                   <div className="flex gap-1">
                     {(["editorial", "brutalist", "modern"] as const).map((style) => (
                       <button
@@ -1130,24 +1229,24 @@ export default function AboutPage() {
                 <div className="py-2 border-t border-stone-100">
                   {activeTypographyStyle === "editorial" && (
                     <div className="font-serif italic text-lg sm:text-xl text-stone-900 leading-snug">
-                      &ldquo;Form follows emotional impact. Crafting timeless digital identity.&rdquo;
+                      &ldquo;Form follows purpose. Crafting memorable, high-converting digital products.&rdquo;
                     </div>
                   )}
                   {activeTypographyStyle === "brutalist" && (
                     <div className="font-mono text-sm sm:text-base font-bold text-stone-950 tracking-tighter uppercase leading-tight">
-                      [STRUCTURAL_MINIMALISM :: MONO_PROPORTIONS // ZERO_FRICTION]
+                      [FAST_EXECUTION :: FULL_STACK_AGILITY // SCALABLE_SYSTEMS]
                     </div>
                   )}
                   {activeTypographyStyle === "modern" && (
                     <div className="font-sans font-extrabold text-base sm:text-lg text-stone-900 tracking-tight leading-snug">
-                      Fluid typography systems synchronized to viewport geometry and device pixel density.
+                      Responsive multi-device interfaces with zero layout shifts and seamless animations.
                     </div>
                   )}
                 </div>
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {["Editorial Design", "Design Systems & Tokens", "Kinetic Typography", "Sub-Pixel Rendering"].map(
+                {["Responsive Web Design", "Figma Design Systems", "API Architecture", "SEO Optimization"].map(
                   (tag) => (
                     <span
                       key={tag}
@@ -1169,41 +1268,41 @@ export default function AboutPage() {
             <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center gap-2 mb-2 text-emerald-800 text-xs font-mono font-semibold">
                 <Code2 className="w-4 h-4" />
-                <span>CREATIVE ENGINEERING</span>
+                <span>FULL-STACK TECH STACK</span>
               </div>
 
               <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
-                Sub-frame response.
-                <span className="block text-amber-800 font-serif lowercase italic text-2xl">
-                  Hardware-accelerated motion.
+                Modern full-stack engines.
+                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                  React, Node.js, Laravel &amp; Flutter.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-700 leading-relaxed mb-5">
-                Front-end development isn&apos;t just writing markup — it is choreographing memory, render loops, and network packets. I engineer web experiences that feel physical and instantaneous, targeting 60 to 120 FPS interactions without jank.
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+                From high-concurrency Node.js and Laravel backends to fluid React frontends and cross-platform Flutter apps. End-to-end integration with payment gateways, automated booking engines, and security monitoring.
               </p>
 
               {/* Live Architecture Matrix */}
               <div className="grid grid-cols-2 gap-3 mb-5">
                 <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">APPLICATION RUNTIME</span>
-                  <span className="text-xs font-bold text-stone-900">Next.js 16 + React 19</span>
-                  <span className="text-[10px] text-stone-600">Turbopack, Server Actions, Zero-bundle hydration</span>
+                  <span className="text-[11px] font-mono text-stone-500">FRONT-END &amp; MOBILE</span>
+                  <span className="text-xs font-bold text-stone-900">React, Next.js, Flutter</span>
+                  <span className="text-[10px] text-stone-600">TypeScript, Flutter Flow, Tailwind CSS</span>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">MOTION ENGINE</span>
-                  <span className="text-xs font-bold text-stone-900">GSAP + Canvas 2D</span>
-                  <span className="text-[10px] text-stone-600">RAF interpolation, hardware rasterization</span>
+                  <span className="text-[11px] font-mono text-stone-500">BACK-END &amp; CMS</span>
+                  <span className="text-xs font-bold text-stone-900">Node.js, Laravel, WordPress</span>
+                  <span className="text-[10px] text-stone-600">REST APIs, Shopify, Joomla, MySQL</span>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">STYLING ARCHITECTURE</span>
-                  <span className="text-xs font-bold text-stone-900">Tailwind CSS 4.0</span>
-                  <span className="text-[10px] text-stone-600">Ultra-lean atomic utility pipeline</span>
+                  <span className="text-[11px] font-mono text-stone-500">SECURITY &amp; DEVOPS</span>
+                  <span className="text-xs font-bold text-stone-900">Threat Detection, CI/CD</span>
+                  <span className="text-[10px] text-stone-600">Malware &amp; Phishing defense, Cloud deploy</span>
                 </div>
                 <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">AUDIT BENCHMARK</span>
-                  <span className="text-xs font-bold text-emerald-700">100 / 100 Lighthouse</span>
-                  <span className="text-[10px] text-stone-600">Performance, Accessibility, SEO</span>
+                  <span className="text-[11px] font-mono text-stone-500">PRODUCTIVITY &amp; TOOLS</span>
+                  <span className="text-xs font-bold text-emerald-800">Figma, VS Code, Git</span>
+                  <span className="text-[10px] text-stone-600">Photoshop, Project Scheduling, SEO</span>
                 </div>
               </div>
 
@@ -1211,19 +1310,22 @@ export default function AboutPage() {
               <div className="glass-dark p-4 rounded-2xl font-mono text-xs shadow-inner">
                 <div className="flex items-center gap-1.5 text-stone-400 text-[11px] pb-2 border-b border-stone-700/80 mb-2">
                   <Terminal className="w-3.5 h-3.5" />
-                  <span>alexander-chen/architecture.config.ts</span>
+                  <span>shohag-hossen/fullstack.config.ts</span>
                 </div>
                 <div className="text-emerald-400">
-                  <span className="text-stone-400">// Strict zero-jank render loop</span>
+                  <span className="text-stone-400">// Lead Developer &amp; Project Manager</span>
                 </div>
                 <div className="text-stone-200">
-                  const engine = <span className="text-amber-300">createMotionPipeline</span>&#40;&#123;
+                  const engineer = <span className="text-amber-300">createFullStackProfile</span>&#40;&#123;
                 </div>
                 <div className="text-stone-300 pl-4">
-                  targetFPS: <span className="text-amber-400">120</span>,
+                  developer: <span className="text-amber-400">&quot;Shohag Hossen&quot;</span>,
                 </div>
                 <div className="text-stone-300 pl-4">
-                  reducedMotion: <span className="text-cyan-400">detectUserPreference&#40;&#41;</span>,
+                  degree: <span className="text-cyan-400">&quot;B.Sc. in CSE, DIU&quot;</span>,
+                </div>
+                <div className="text-stone-300 pl-4">
+                  focus: <span className="text-emerald-400">&quot;Full-Stack Dev + Cyber Threat Detection&quot;</span>,
                 </div>
                 <div className="text-stone-200">&#125;&#41;;</div>
               </div>
@@ -1238,18 +1340,18 @@ export default function AboutPage() {
             <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center gap-2 mb-2 text-stone-700 text-xs font-mono font-semibold">
                 <Briefcase className="w-4 h-4 text-amber-700" />
-                <span>FLAGSHIP PORTFOLIO DELIVERABLES</span>
+                <span>FLAGSHIP DELIVERABLES &amp; APPS</span>
               </div>
 
               <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
-                Engineered for conversion.
-                <span className="block text-amber-800 font-serif lowercase italic text-2xl">
-                  celebrated by the industry.
+                Delivered across industries.
+                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                  Agency platforms, apps &amp; cyber systems.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-700 leading-relaxed mb-5">
-                Every client partnership is measured by tangible outcomes: venture capital closed, user adoption accelerated, and distinct brand defensibility established.
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+                Demonstrated success in launching complex booking platforms, responsive agency portals, e-commerce storefronts, and research thesis cybersecurity platforms.
               </p>
 
               {/* Interactive Project Switcher */}
@@ -1283,7 +1385,7 @@ export default function AboutPage() {
                       </span>
                     </div>
 
-                    <p className="text-xs text-stone-600 mb-3 leading-relaxed">
+                    <p className="text-xs text-stone-700 mb-3 leading-relaxed">
                       {proj.description}
                     </p>
 
@@ -1322,18 +1424,18 @@ export default function AboutPage() {
             <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center gap-2 mb-2 text-stone-800 text-xs font-mono font-semibold">
                 <Sliders className="w-4 h-4 text-amber-700" />
-                <span>SPRINT METHODOLOGY</span>
+                <span>LEADERSHIP &amp; SPRINT DISCIPLINE</span>
               </div>
 
               <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
-                From abstract problem
-                <span className="block text-amber-800 font-serif lowercase italic text-2xl">
-                  to production flagship in 8 weeks.
+                From technical scoping
+                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                  to secure, on-time launch.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-700 leading-relaxed mb-5">
-                A disciplined, predictable framework engineered to minimize revisions and eliminate project drift. Every milestone has explicit deliverables and testing benchmarks.
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+                Experienced as a Technical Team Lead managing developer task allocation, code reviews, backend integrations, and stakeholder alignment under tight deadlines.
               </p>
 
               <div className="space-y-2.5">
@@ -1354,7 +1456,7 @@ export default function AboutPage() {
                           {step.phase}
                         </span>
                       </div>
-                      <p className="text-[11px] text-stone-600 leading-relaxed mb-1.5">
+                      <p className="text-[11px] text-stone-700 leading-relaxed mb-1.5">
                         {step.description}
                       </p>
                       <div className="flex flex-wrap gap-1">
@@ -1388,12 +1490,12 @@ export default function AboutPage() {
               <h2 className="text-2xl sm:text-4xl font-extrabold uppercase text-stone-950 mb-3 tracking-tight leading-tight">
                 PARKED &amp; READY TO
                 <span className="block text-amber-900 font-serif lowercase italic text-3xl sm:text-5xl">
-                  build something exceptional.
+                  build your next flagship.
                 </span>
               </h2>
 
               <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-6 font-normal">
-                You&apos;ve completed the journey through my craft, engineering architecture, and track record. Currently reserving select client engagements for visionary founders and venture-backed teams.
+                You&apos;ve completed the journey through my engineering stack, track record, and methodology. Explore my interactive CV or start a direct conversation below.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center gap-3 mb-8">
@@ -1407,14 +1509,22 @@ export default function AboutPage() {
                 </button>
 
                 <Link
+                  href="/cv"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold tracking-wider transition-all shadow-md cursor-pointer"
+                >
+                  <span>VIEW MY CV</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                <Link
                   href="/"
                   className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-full glass-card hover:bg-white text-stone-900 text-xs font-semibold tracking-wider transition-all border border-stone-200/80 shadow-md cursor-pointer bg-white/70"
                 >
-                  <span>RETURN TO HOME</span>
+                  <span>HOME</span>
                 </Link>
               </div>
 
-              <div className="pt-6 border-t border-stone-200/80 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-stone-700">
+              <div className="pt-6 border-t border-stone-200/80 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-stone-800">
                 <a
                   href={`mailto:${PERSONAL_INFO.email}`}
                   className="hover:text-stone-950 transition-colors underline decoration-amber-600 underline-offset-4"
@@ -1423,7 +1533,7 @@ export default function AboutPage() {
                 </a>
                 <span className="flex items-center gap-1.5 text-emerald-800 font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  Available for select Q4 engagements
+                  +880 1646-679-886 • Dhaka, Bangladesh
                 </span>
               </div>
             </div>

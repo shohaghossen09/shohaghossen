@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sparkles, Mail, ArrowUpRight, Globe } from "lucide-react";
+import { Sparkles, Mail, ArrowUpRight, Globe, MessageSquare } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
 interface ContactSectionProps {
@@ -35,6 +35,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
       <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-6">
         {/* Left Flank: High-Impact Editorial Invitation */}
         <div className="w-full max-w-sm sm:max-w-md xl:max-w-lg flex flex-col justify-center pointer-events-auto p-4 sm:p-5 lg:p-0 rounded-2xl glass-card lg:glass-card-none lg:bg-transparent lg:border-none lg:shadow-none">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-stone-800 text-[11px] font-mono mb-2 sm:mb-3 self-start shadow-sm border border-white/60">
+            <MessageSquare className="w-3.5 h-3.5 text-stone-600" />
+            <span className="font-semibold tracking-wider uppercase">07 / NEXT CHAPTER</span>
+          </div>
 
           <h2 className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight text-stone-950 uppercase leading-[1.08] mb-2 sm:mb-4">
             HAVE AN IDEA

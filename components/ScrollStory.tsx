@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { CharacterStage } from "@/components/CharacterStage";
 import { Navbar } from "@/components/Navbar";
+import { TimelineBar } from "@/components/TimelineBar";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
@@ -187,6 +188,16 @@ export const ScrollStory: React.FC = () => {
         progress={scrollProgress}
         onNavigateChapter={navigateToChapter}
         onOpenContactModal={() => setIsContactModalOpen(true)}
+      />
+
+      {/* 4. Bottom Interactive Timeline Scrubber & 480 FPS HUD */}
+      <TimelineBar
+        scrollProgress={scrollProgress}
+        currentTime={currentTime}
+        duration={duration}
+        currentChapterId={currentChapterId}
+        onSeekProgress={seekProgress}
+        reducedMotion={reducedMotion}
       />
 
       {/* 5. Modals */}

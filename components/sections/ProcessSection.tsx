@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CheckCircle2 } from "lucide-react";
+import { GitBranch, CheckCircle2 } from "lucide-react";
 import { PROCESS_STEPS } from "@/data/portfolioData";
 
 interface ProcessSectionProps {
@@ -75,6 +75,12 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ progress }) => {
         {/* Left Flank: Header + Steps 01-03 */}
         <div className="w-full max-w-sm xl:max-w-md flex flex-col gap-3 pointer-events-auto">
           <div className="mb-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-stone-800 text-[11px] font-mono mb-2 shadow-sm border border-white/60">
+              <GitBranch className="w-3.5 h-3.5 text-stone-600" />
+              <span className="font-semibold tracking-wider uppercase">
+                05 / WORK METHODOLOGY
+              </span>
+            </div>
 
             <h2 className="text-xl xl:text-3xl font-extrabold tracking-tight text-stone-950 uppercase leading-tight">
               HOW I TURN IDEAS INTO

@@ -1,25 +1,25 @@
 import { Project, Service, ProcessStep, ValuePillar } from "@/types/portfolio";
 
 export const PERSONAL_INFO = {
-  name: "ALEXANDER CHEN",
-  role: "Lead Design Engineer & Creative Technologist",
+  name: "SHOHAG HOSSEN",
+  role: "Full-Stack Developer & Technical Team Lead",
   tagline: "BUILD DIGITAL EXPERIENCES THAT HELP BUSINESSES GET NOTICED, TRUSTED & CHOSEN.",
   heroSubtitle:
-    "I design and develop high-converting websites and digital experiences that turn ideas into memorable online products.",
+    "Full-Stack Developer & IT Specialist crafting scalable web, mobile & cloud solutions with React, Node.js, Laravel, Flutter, and secure cloud architectures.",
   aboutHeadline: "BEHIND THE WORK IS A PERSON WHO CARES ABOUT THE DETAILS.",
   aboutBio:
-    "I bridge the gap between bold editorial art direction and resilient engineering. For over eight years, I've partnered with venture-backed startups and visionary founders to turn ambitious concepts into award-winning digital flagships.",
-  location: "San Francisco, CA / Available Globally",
-  coordinates: "37.7749° N, 122.4194° W",
-  experienceYears: "8+ Years",
-  projectsShipped: "40+ Shipped",
-  status: "Available for select Q4 engagements",
-  email: "alexander@chen.design",
+    "B.Sc. in Computer Science and Engineering (CSE) graduate from Dhaka International University with proven track record as a Freelance Developer, Project Manager, and Technical Team Lead. Skilled in end-to-end development, architecture, security, and project delivery.",
+  location: "Badda, Dhaka, Bangladesh",
+  coordinates: "23.7771° N, 90.4285° E",
+  phone: "+880 1646-679-886",
+  experienceYears: "4+ Years",
+  projectsShipped: "35+ Shipped",
+  status: "Available for select client engagements & roles",
+  email: "shohaghossen79886@gmail.com",
   socials: [
-    { label: "Twitter / X", url: "https://x.com", handle: "@alexanderchen" },
-    { label: "GitHub", url: "https://github.com", handle: "github.com/alexanderchen" },
-    { label: "LinkedIn", url: "https://linkedin.com", handle: "linkedin.com/in/alexanderchen" },
-    { label: "Dribbble", url: "https://dribbble.com", handle: "dribbble.com/alexanderchen" },
+    { label: "LinkedIn", url: "https://linkedin.com", handle: "linkedin profile" },
+    { label: "GitHub", url: "https://github.com", handle: "github.com/shohaghossen" },
+    { label: "Email", url: "mailto:shohaghossen79886@gmail.com", handle: "shohaghossen79886@gmail.com" },
   ],
 };
 

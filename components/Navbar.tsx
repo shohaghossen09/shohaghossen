@@ -36,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
           >
             <div className="w-9 h-9 rounded-full bg-stone-900 text-stone-100 flex items-center justify-center font-mono text-xs font-semibold tracking-wider group-hover:scale-105 transition-transform duration-300 shadow-md">
-              AC
+              SH
             </div>
             <div className="flex flex-col">
               <span className="font-semibold text-xs tracking-widest uppercase text-stone-900 flex items-center gap-2">
@@ -44,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
               </span>
               <span className="text-[10px] font-mono text-stone-600 tracking-wider hidden sm:inline">
-                DESIGN ENGINEER
+                FULL-STACK DEV
               </span>
             </div>
           </Link>
@@ -87,6 +87,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           }`}
         >
           About
+        </Link>
+        <Link
+          href="/cv"
+          className={`px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
+            pathname === "/cv"
+              ? "bg-stone-900 text-stone-50 shadow-md"
+              : "text-stone-600 hover:text-stone-950 hover:bg-stone-100"
+          }`}
+        >
+          CV
         </Link>
       </nav>
     </>

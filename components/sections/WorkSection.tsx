@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUpRight, Award, Monitor } from "lucide-react";
+import { Briefcase, ArrowUpRight, Award, Monitor } from "lucide-react";
 import { PROJECTS } from "@/data/portfolioData";
 import { Project } from "@/types/portfolio";
 
@@ -48,6 +48,10 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
         {/* Top Header & Indicator Tabs */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-3 pointer-events-auto">
           <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-stone-800 text-[11px] font-mono mb-1 shadow-sm border border-white/60">
+              <Briefcase className="w-3.5 h-3.5 text-stone-600" />
+              <span className="font-semibold tracking-wider uppercase">04 / SELECTED WORK</span>
+            </div>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-stone-950 uppercase leading-none">
               BUILT TO MAKE AN
               <span className="text-amber-800 italic font-serif lowercase ml-2 text-xl sm:text-3xl">
@@ -67,7 +71,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                     : "text-stone-600 hover:text-stone-900 hover:bg-white/40"
                 }`}
               >
-                {proj.title.split(" ")[0]}
+                0{idx + 1} {proj.title.split(" ")[0]}
               </button>
             ))}
           </div>

@@ -19,19 +19,22 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Alexander Chen — Lead Design Engineer | Cinematic Story Portfolio",
+  title: "Shohag Hossen — Full-Stack Developer | Portfolio & CV",
   description:
-    "A continuous cinematic scroll-driven portfolio. Discover, plan, and build digital experiences that help businesses get noticed, trusted, and chosen.",
+    "Full-Stack Developer, Technical Team Lead & IT Specialist crafting scalable web, mobile & cloud solutions with React, Node.js, Laravel, Flutter, and secure cloud architectures.",
   keywords: [
-    "Design Engineer",
-    "Creative Developer",
+    "Shohag Hossen",
+    "Full-Stack Developer",
+    "Technical Team Lead",
+    "React",
+    "Node.js",
+    "Laravel",
+    "Flutter",
+    "WordPress",
     "Portfolio",
-    "Next.js",
-    "GSAP",
-    "Scroll Animation",
-    "Interactive Web",
+    "CV",
   ],
-  authors: [{ name: "Alexander Chen" }],
+  authors: [{ name: "Shohag Hossen" }],
 };
 
 export default function RootLayout({

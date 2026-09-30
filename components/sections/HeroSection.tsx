@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowDown, Sparkles, Compass, Code2 } from "lucide-react";
+import { ArrowDown, Sparkles, Compass, Play, Code2 } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
 interface HeroSectionProps {
@@ -32,11 +32,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-6">
         {/* Left Flank: Big Editorial Headline & Benefit */}
         <div className="w-full max-w-sm sm:max-w-md xl:max-w-lg flex flex-col justify-center pointer-events-auto p-4 sm:p-5 lg:p-0 rounded-2xl glass-card lg:glass-card-none lg:bg-transparent lg:border-none lg:shadow-none">
-          {/* Status Pill */}
+          {/* Live Engine Pill */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-pill text-stone-800 text-[11px] font-mono mb-2 sm:mb-4 self-start shadow-sm border border-white/60">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-medium tracking-wide">
-              AVAILABLE FOR SELECT ENGAGEMENTS
+            <span className="font-semibold tracking-wide">
+              480 FPS FRAME-SYNCHRONIZED ENGINE
             </span>
           </div>
 
@@ -101,17 +101,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
 
-          {/* Artifact 2: Craft Focus Card */}
+          {/* Artifact 2: Video Playback Spec Pill */}
           <div className="w-full glass-card px-4 py-2.5 rounded-xl border border-white/70 shadow-md flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-stone-100 flex items-center justify-center text-stone-800 shrink-0">
-              <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+            <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
+              <Play className="w-3.5 h-3.5" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[11px] font-mono text-stone-800 font-semibold uppercase">
-                Design &amp; Engineering
+              <span className="text-[11px] font-mono text-stone-800 font-semibold">
+                480 FPS SCROLL-SYNC
               </span>
               <span className="text-[10px] text-stone-500">
-                Editorial art direction meets high performance
+                Directly bound to scroll progress
               </span>
             </div>
           </div>
