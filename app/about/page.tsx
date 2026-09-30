@@ -11,10 +11,6 @@ import {
   ChevronDown,
   Briefcase,
   Sliders,
-  Award,
-  Layers,
-  CheckCircle2,
-  Compass,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { ContactModal } from "@/components/modals/ContactModal";

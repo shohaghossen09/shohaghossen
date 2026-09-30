@@ -47,37 +47,37 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               onClick={() => onNavigateChapter("hero")}
               className="hover:text-stone-950 transition-colors cursor-pointer"
             >
-              // 01 HERO
+              HERO
             </button>
             <button
               onClick={() => onNavigateChapter("about")}
               className="hover:text-stone-950 transition-colors cursor-pointer"
             >
-              // 02 ABOUT
+              ABOUT
             </button>
             <button
               onClick={() => onNavigateChapter("services")}
               className="hover:text-stone-950 transition-colors cursor-pointer"
             >
-              // 03 SERVICES
+              SERVICES
             </button>
             <button
               onClick={() => onNavigateChapter("work")}
               className="hover:text-stone-950 transition-colors cursor-pointer"
             >
-              // 04 WORK
+              WORK
             </button>
             <button
               onClick={() => onNavigateChapter("process")}
               className="hover:text-stone-950 transition-colors cursor-pointer"
             >
-              // 05 PROCESS
+              PROCESS
             </button>
             <button
               onClick={() => onNavigateChapter("contact")}
               className="hover:text-stone-950 transition-colors cursor-pointer"
             >
-              // 06 CONTACT
+              CONTACT
             </button>
           </div>
 
@@ -94,10 +94,8 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
           <div>
             &copy; {new Date().getFullYear()} {PERSONAL_INFO.name}. All rights reserved.
           </div>
-          <div className="flex items-center gap-1.5">
-            <span>Synchronized Scroll Engine</span>
-            <span>•</span>
-            <span className="text-amber-800 font-semibold">480 FPS</span>
+          <div>
+            <span>Full-Stack Development &amp; Engineering</span>
           </div>
         </div>
       </div>
