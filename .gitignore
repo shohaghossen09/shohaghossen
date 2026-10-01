@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scratch and test artifacts
+/public/about_test/
+/public/preview_frames/
+/public/renault_preview/
+/public/test_screenshots/

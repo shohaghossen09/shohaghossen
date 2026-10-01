@@ -12,6 +12,11 @@ export interface Project {
   color: string;
   previewImage?: string;
   demoUrl?: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  features?: string[];
+  role?: string;
+  badge?: string;
   details: {
     challenge: string;
     solution: string;
