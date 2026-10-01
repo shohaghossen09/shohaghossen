@@ -15,6 +15,7 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { ContactModal } from "@/components/modals/ContactModal";
 import { PERSONAL_INFO, PROJECTS, PROCESS_STEPS } from "@/data/portfolioData";
+import { audioEngine } from "@/utils/audio";
 
 interface Station {
   id: string;
@@ -40,6 +41,13 @@ export default function AboutPage() {
   const [activeProjectIdx, setActiveProjectIdx] = useState(0);
   const [activeTypographyStyle, setActiveTypographyStyle] = useState<"editorial" | "brutalist" | "modern">("editorial");
   const [isParked, setIsParked] = useState(false);
+
+  // Strictly silence and stop all ambient audio on the About page
+  useEffect(() => {
+    if (audioEngine) {
+      audioEngine.stop();
+    }
+  }, []);
 
   // Direct DOM Refs for 120 FPS zero-lag hardware-accelerated movement
   const containerRef = useRef<HTMLDivElement>(null);
@@ -296,7 +304,7 @@ export default function AboutPage() {
         background: "radial-gradient(ellipse at 50% 45%, #b8aca0 0%, #aa9e92 50%, #998e83 100%)",
       }}
     >
-      {/* CSS Keyframe Animations for Living Landscape (River, Boat, Train, Turbines, Birds, Clouds) */}
+      {/* CSS Keyframe Animations for Living Landscape (River, Boat, Train, Turbines, Clouds) */}
       <style jsx global>{`
         @keyframes riverWaterFlow {
           0% { stroke-dashoffset: 0; }
@@ -313,10 +321,6 @@ export default function AboutPage() {
         @keyframes cloudDriftSlow3 {
           0% { transform: translateX(-300px); }
           100% { transform: translateX(1200px); }
-        }
-        @keyframes birdWingFlapSmooth {
-          0%, 100% { transform: scaleY(1); }
-          50% { transform: scaleY(0.28); }
         }
         @keyframes turbineRotorSpin {
           0% { transform: rotate(0deg); }
@@ -338,10 +342,6 @@ export default function AboutPage() {
         }
         .anim-cloud-top-3 {
           animation: cloudDriftSlow3 85s linear infinite;
-        }
-        .anim-bird-wing {
-          animation: birdWingFlapSmooth 0.38s ease-in-out infinite;
-          transform-origin: center;
         }
         .anim-turbine {
           animation: turbineRotorSpin 4.2s linear infinite;
@@ -427,7 +427,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* SVG Route Geometry & Living Landscape Layer (River, Boat, Railway, Train, Windmills, Clouds, Birds, Realistic Car) */}
+        {/* SVG Route Geometry & Living Landscape Layer (River, Boat, Railway, Train, Windmills, Clouds, Realistic Car) */}
         <div className="relative w-full" style={{ height: `${SVG_HEIGHT}px` }}>
           <svg
             viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
@@ -751,41 +751,6 @@ export default function AboutPage() {
                 <circle cx="0" cy="0" r="24" fill="#14532d" />
                 <circle cx="-5" cy="-5" r="16" fill="#052e16" />
                 <circle cx="4" cy="2" r="8" fill="#166534" />
-              </g>
-            </g>
-
-            {/* ============================================================== */}
-            {/* 5. SMOOTH SOARING BIRDS WITH NATURAL WING CURVES               */}
-            {/* ============================================================== */}
-            <g id="soaring-birds">
-              <animateMotion
-                path="M -120 720 C 300 680, 700 580, 1140 480"
-                rotate="auto"
-                dur="26s"
-                repeatCount="indefinite"
-              />
-              {/* Authentic V-Formation Flock with Ground Parallax Shadows */}
-              <g>
-                {/* Lead Bird */}
-                <g transform="translate(0, 0)">
-                  <path d="M -12 2 Q -6 -8 0 0 Q 6 -8 12 2 Q 6 -4 0 1 Q -6 -4 -12 2 Z" fill="#1c1917" className="anim-bird-wing" />
-                </g>
-                {/* Flank Bird 1 */}
-                <g transform="translate(-24, 18)">
-                  <path d="M -10 2 Q -5 -7 0 0 Q 5 -7 10 2 Q 5 -3 0 1 Q -5 -3 -10 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.08s" }} />
-                </g>
-                {/* Flank Bird 2 */}
-                <g transform="translate(-48, 36)">
-                  <path d="M -9 2 Q -4.5 -6 0 0 Q 4.5 -6 9 2 Q 4.5 -3 0 1 Q -4.5 -3 -9 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.16s" }} />
-                </g>
-                {/* Flank Bird 3 */}
-                <g transform="translate(-22, -18)">
-                  <path d="M -10 2 Q -5 -7 0 0 Q 5 -7 10 2 Q 5 -3 0 1 Q -5 -3 -10 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.12s" }} />
-                </g>
-                {/* Flank Bird 4 */}
-                <g transform="translate(-44, -36)">
-                  <path d="M -9 2 Q -4.5 -6 0 0 Q 4.5 -6 9 2 Q 4.5 -3 0 1 Q -4.5 -3 -9 2 Z" fill="#292524" className="anim-bird-wing" style={{ animationDelay: "0.2s" }} />
-                </g>
               </g>
             </g>
 
