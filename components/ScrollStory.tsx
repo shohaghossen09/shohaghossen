@@ -19,8 +19,6 @@ import { audioEngine } from "@/utils/audio";
 
 export const ScrollStory: React.FC = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(16.0);
   const [currentChapterId, setCurrentChapterId] = useState<string>("hero");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -28,6 +26,7 @@ export const ScrollStory: React.FC = () => {
 
   const lastScrollYRef = useRef(0);
   const lastChapterRef = useRef("hero");
+  const lastProgressRef = useRef(0);
 
   // Auto sound on: activate warm ambient audio engine on first interaction
   useEffect(() => {
@@ -62,7 +61,7 @@ export const ScrollStory: React.FC = () => {
     return () => mediaQuery.removeEventListener("change", listener);
   }, []);
 
-  // Central Scroll Handler
+  // Central Throttled Scroll Handler for React UI layers
   useEffect(() => {
     let ticking = false;
 
@@ -74,7 +73,11 @@ export const ScrollStory: React.FC = () => {
             document.documentElement.scrollHeight - window.innerHeight;
           const progress = maxScroll > 0 ? Math.max(0, Math.min(1, scrollY / maxScroll)) : 0;
 
-          setScrollProgress(progress);
+          // Only trigger React state update if progress shifted noticeably (prevents micro-jitter re-renders)
+          if (Math.abs(progress - lastProgressRef.current) > 0.0008 || progress === 0 || progress === 1) {
+            lastProgressRef.current = progress;
+            setScrollProgress(progress);
+          }
 
           // Audio pitch/filter tracking
           const delta = Math.abs(scrollY - lastScrollYRef.current);
@@ -109,12 +112,6 @@ export const ScrollStory: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Time update callback from video stage
-  const handleTimeUpdate = useCallback((curr: number, dur: number) => {
-    setCurrentTime(curr);
-    if (dur && !isNaN(dur)) setDuration(dur);
-  }, []);
-
   // Navigation jumping
   const navigateToChapter = useCallback((chapterId: string) => {
     const chapter = CHAPTERS.find((c) => c.id === chapterId);
@@ -128,19 +125,9 @@ export const ScrollStory: React.FC = () => {
     });
   }, []);
 
-  // Seek bar navigation
-  const seekProgress = useCallback((targetProgress: number) => {
-    const maxScroll =
-      document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({
-      top: targetProgress * maxScroll,
-      behavior: "smooth",
-    });
-  }, []);
-
   return (
     <main className="relative w-full bg-[#aba095] min-h-screen text-stone-900 selection:bg-stone-900 selection:text-white overflow-x-hidden">
-      {/* 1. Top Fixed Navigation Bar (Sound button removed, auto sound on) */}
+      {/* 1. Top Fixed Navigation Bar */}
       <Navbar
         currentChapterId={currentChapterId}
         onNavigateChapter={navigateToChapter}
@@ -148,10 +135,9 @@ export const ScrollStory: React.FC = () => {
         reducedMotion={reducedMotion}
       />
 
-      {/* 2. Fixed Character Stage (Borderless, Smooth 480fps Video + Ambient Atmosphere) */}
+      {/* 2. Fixed Character Stage (Hardware-Accelerated 60-120 FPS Canvas Stage) */}
       <CharacterStage
         scrollProgress={scrollProgress}
-        onTimeUpdate={handleTimeUpdate}
         reducedMotion={reducedMotion}
       />
 
@@ -189,7 +175,7 @@ export const ScrollStory: React.FC = () => {
         onOpenContactModal={() => setIsContactModalOpen(true)}
       />
 
-      {/* 5. Modals */}
+      {/* 4. Modals */}
       <ProjectModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
@@ -200,7 +186,7 @@ export const ScrollStory: React.FC = () => {
         onClose={() => setIsContactModalOpen(false)}
       />
 
-      {/* 6. Physical Scroll Runway (850vh smooth scroll) */}
+      {/* 5. Physical Scroll Runway (850vh smooth scroll) */}
       <div
         className="w-full pointer-events-none opacity-0 select-none"
         style={{ height: "850vh" }}
