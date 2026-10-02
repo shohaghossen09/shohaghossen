@@ -305,52 +305,100 @@ export default function AboutPage() {
         background: "radial-gradient(ellipse at 50% 45%, #b8aca0 0%, #aa9e92 50%, #998e83 100%)",
       }}
     >
-      {/* CSS Keyframe Animations for Living Landscape (River, Boat, Train, Turbines, Clouds) */}
+      {/* CSS Keyframe Animations for Living Landscape (River, Boat, Train, Turbines, Clouds, Buoys, Sparks) */}
       <style jsx global>{`
-        @keyframes riverWaterFlow {
+        @keyframes riverWaterFlow1 {
           0% { stroke-dashoffset: 0; }
-          100% { stroke-dashoffset: -120; }
+          100% { stroke-dashoffset: -160; }
+        }
+        @keyframes riverWaterFlow2 {
+          0% { stroke-dashoffset: 0; }
+          100% { stroke-dashoffset: -110; }
+        }
+        @keyframes riverWaterFlow3 {
+          0% { stroke-dashoffset: 0; }
+          100% { stroke-dashoffset: -220; }
         }
         @keyframes cloudDriftSlow1 {
-          0% { transform: translateX(-240px); }
-          100% { transform: translateX(1240px); }
+          0% { transform: translateX(-350px); }
+          100% { transform: translateX(1350px); }
         }
         @keyframes cloudDriftSlow2 {
-          0% { transform: translateX(1240px); }
-          100% { transform: translateX(-320px); }
+          0% { transform: translateX(1350px); }
+          100% { transform: translateX(-350px); }
         }
         @keyframes cloudDriftSlow3 {
-          0% { transform: translateX(-300px); }
-          100% { transform: translateX(1200px); }
+          0% { transform: translateX(-320px); }
+          100% { transform: translateX(1300px); }
         }
         @keyframes turbineRotorSpin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
         @keyframes boatSway {
-          0%, 100% { transform: rotate(0deg); }
-          50% { transform: rotate(2.5deg); }
+          0%, 100% { transform: rotate(0deg) translateY(0); }
+          30% { transform: rotate(1.8deg) translateY(-1.2px); }
+          70% { transform: rotate(-1.5deg) translateY(1.2px); }
         }
-        .anim-river-flow {
+        @keyframes radarSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes buoyBob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-3.5px); }
+        }
+        @keyframes beaconBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.15; }
+        }
+        @keyframes pantographSpark {
+          0%, 86%, 100% { opacity: 0; }
+          89% { opacity: 0.95; }
+          91% { opacity: 0.2; }
+          93% { opacity: 1; }
+        }
+        .anim-river-flow-1 {
+          stroke-dasharray: 26 18;
+          animation: riverWaterFlow1 2.2s linear infinite;
+        }
+        .anim-river-flow-2 {
           stroke-dasharray: 20 14;
-          animation: riverWaterFlow 2.4s linear infinite;
+          animation: riverWaterFlow2 3.2s linear infinite;
+        }
+        .anim-river-flow-3 {
+          stroke-dasharray: 32 24;
+          animation: riverWaterFlow3 1.8s linear infinite;
         }
         .anim-cloud-top-1 {
-          animation: cloudDriftSlow1 55s linear infinite;
+          animation: cloudDriftSlow1 60s linear infinite;
         }
         .anim-cloud-top-2 {
-          animation: cloudDriftSlow2 70s linear infinite;
+          animation: cloudDriftSlow2 75s linear infinite;
         }
         .anim-cloud-top-3 {
-          animation: cloudDriftSlow3 85s linear infinite;
+          animation: cloudDriftSlow3 90s linear infinite;
         }
         .anim-turbine {
           animation: turbineRotorSpin 4.2s linear infinite;
           transform-origin: 0px 0px;
         }
         .anim-boat-body {
-          animation: boatSway 3s ease-in-out infinite;
+          animation: boatSway 3.6s ease-in-out infinite;
           transform-origin: 0px 0px;
+        }
+        .anim-radar {
+          animation: radarSpin 2.4s linear infinite;
+          transform-origin: 0px 0px;
+        }
+        .anim-buoy {
+          animation: buoyBob 2.8s ease-in-out infinite;
+        }
+        .anim-beacon {
+          animation: beaconBlink 1.4s steps(2, start) infinite;
+        }
+        .anim-spark {
+          animation: pantographSpark 3.8s ease-in-out infinite;
         }
       `}</style>
 
@@ -407,6 +455,18 @@ export default function AboutPage() {
         </div>
       </aside>
 
+      {/* Floating Route Milestone Tracker Chip for Mobile/Tablet (< xl) */}
+      <div className="xl:hidden fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 z-40 pointer-events-auto max-w-[94vw] transition-all duration-300">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card bg-white/90 border border-white/95 shadow-xl backdrop-blur-xl text-[11px] font-mono">
+          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+          <span className="text-stone-900 font-bold uppercase truncate max-w-[170px] sm:max-w-none">
+            {STATIONS[activeStationIndex]?.label || "Highway Route"}
+          </span>
+          <span className="text-stone-300">•</span>
+          <span className="text-amber-800 font-semibold">{activeStationIndex + 1}/6</span>
+        </div>
+      </div>
+
       {/* Main 2D Highway Route & Checkpoints Layer */}
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-36 z-10">
         {/* Route Intro Header: Clean & Editorial, matching Home page aesthetic */}
@@ -447,49 +507,88 @@ export default function AboutPage() {
 
               {/* Realistic Headlight Beam Projection with soft falloff */}
               <linearGradient id="headlightBeam" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#fef08a" stopOpacity="0.85" />
-                <stop offset="35%" stopColor="#fef9c3" stopOpacity="0.38" />
-                <stop offset="75%" stopColor="#fef9c3" stopOpacity="0.12" />
+                <stop offset="0%" stopColor="#fef08a" stopOpacity="0.9" />
+                <stop offset="30%" stopColor="#fef9c3" stopOpacity="0.45" />
+                <stop offset="70%" stopColor="#fef9c3" stopOpacity="0.15" />
                 <stop offset="100%" stopColor="#fef9c3" stopOpacity="0" />
               </linearGradient>
 
-              {/* River Water Deep & Shimmer Gradient */}
+              {/* Bullet Train High-Power Xenon Headlight Beam */}
+              <linearGradient id="trainHeadlightCone" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+                <stop offset="25%" stopColor="#e0f2fe" stopOpacity="0.5" />
+                <stop offset="65%" stopColor="#38bdf8" stopOpacity="0.15" />
+                <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
+              </linearGradient>
+
+              {/* River Shoreline Sand & Earth Gradient */}
+              <linearGradient id="riverBankSand" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#8c8072" />
+                <stop offset="50%" stopColor="#756b5e" />
+                <stop offset="100%" stopColor="#8c8072" />
+              </linearGradient>
+
+              {/* River Shallow Water Gradient */}
+              <linearGradient id="riverShallows" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#0284c7" stopOpacity="0.75" />
+              </linearGradient>
+
+              {/* Deep Water Channel Gradient */}
               <linearGradient id="riverWater" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.85" />
-                <stop offset="45%" stopColor="#0284c7" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#0369a1" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.9" />
+                <stop offset="35%" stopColor="#0284c7" stopOpacity="0.95" />
+                <stop offset="75%" stopColor="#0369a1" stopOpacity="0.98" />
+                <stop offset="100%" stopColor="#075985" stopOpacity="1" />
               </linearGradient>
 
               {/* High-Speed Bullet Train Aerodynamic Metallic Body */}
               <linearGradient id="bulletTrainBody" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#ffffff" />
-                <stop offset="40%" stopColor="#e2e8f0" />
-                <stop offset="50%" stopColor="#0284c7" />
+                <stop offset="35%" stopColor="#f8fafc" />
+                <stop offset="48%" stopColor="#0284c7" />
+                <stop offset="55%" stopColor="#0369a1" />
                 <stop offset="85%" stopColor="#0f172a" />
                 <stop offset="100%" stopColor="#020617" />
+              </linearGradient>
+
+              {/* Steel Rail Polished Specular Shine */}
+              <linearGradient id="railSteelSpecular" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#334155" />
+                <stop offset="35%" stopColor="#f8fafc" />
+                <stop offset="65%" stopColor="#cbd5e1" />
+                <stop offset="100%" stopColor="#1e293b" />
+              </linearGradient>
+
+              {/* Architectural Concrete Structure Gradient */}
+              <linearGradient id="concreteStructure" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#78716c" />
+                <stop offset="25%" stopColor="#d6d3d1" />
+                <stop offset="75%" stopColor="#e7e5e4" />
+                <stop offset="100%" stopColor="#78716c" />
               </linearGradient>
 
               {/* Hyper-Realistic Metallic Car Chassis Gradient */}
               <linearGradient id="carBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#2b2825" />
-                <stop offset="25%" stopColor="#3d3733" />
+                <stop offset="25%" stopColor="#443e39" />
                 <stop offset="50%" stopColor="#1e1c1a" />
-                <stop offset="75%" stopColor="#2e2a27" />
-                <stop offset="100%" stopColor="#1a1816" />
+                <stop offset="75%" stopColor="#38322c" />
+                <stop offset="100%" stopColor="#181615" />
               </linearGradient>
 
               {/* Windshield Glass Reflection Gradient */}
               <linearGradient id="windshieldGlass" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#0284c7" stopOpacity="0.85" />
-                <stop offset="45%" stopColor="#38bdf8" stopOpacity="0.7" />
-                <stop offset="55%" stopColor="#ffffff" stopOpacity="0.9" />
+                <stop offset="45%" stopColor="#38bdf8" stopOpacity="0.75" />
+                <stop offset="55%" stopColor="#ffffff" stopOpacity="0.95" />
                 <stop offset="100%" stopColor="#0369a1" stopOpacity="0.85" />
               </linearGradient>
 
               {/* Alloy Wheel Rim Radial Gradient */}
               <radialGradient id="alloyRim" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#d6d3d1" />
-                <stop offset="60%" stopColor="#78716c" />
+                <stop offset="0%" stopColor="#f5f5f4" />
+                <stop offset="55%" stopColor="#78716c" />
                 <stop offset="100%" stopColor="#1c1917" />
               </radialGradient>
 
@@ -502,8 +601,12 @@ export default function AboutPage() {
                 <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#000000" floodOpacity="0.25" />
               </filter>
 
+              <filter id="bridgeDeepShadow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="6" dy="10" stdDeviation="8" floodColor="#000000" floodOpacity="0.55" />
+              </filter>
+
               <filter id="cloudShadow" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="0" dy="12" stdDeviation="12" floodColor="#1c1917" floodOpacity="0.18" />
+                <feDropShadow dx="0" dy="12" stdDeviation="14" floodColor="#1c1917" floodOpacity="0.22" />
               </filter>
             </defs>
 
@@ -513,75 +616,161 @@ export default function AboutPage() {
             <g id="scenic-river">
               {/* Riverbed Shoreline (Sandy Earth Banks) */}
               <path
-                d="M 1040 1705 C 820 1735, 680 1805, 480 1815 C 300 1825, 160 1865, -40 1875 L -40 1970 C 160 1960, 300 1920, 480 1910 C 680 1900, 820 1830, 1040 1800 Z"
-                fill="#8f8477"
-                opacity="0.65"
+                d="M 1050 1695 C 820 1725, 680 1795, 480 1805 C 300 1815, 160 1855, -50 1865 L -50 1980 C 160 1970, 300 1930, 480 1920 C 680 1910, 820 1840, 1050 1810 Z"
+                fill="url(#riverBankSand)"
+                opacity="0.8"
+              />
+              {/* River Shallows / Sand Shelf */}
+              <path
+                d="M 1050 1710 C 820 1740, 680 1810, 480 1820 C 300 1830, 160 1870, -50 1880 L -50 1965 C 160 1955, 300 1915, 480 1905 C 680 1895, 820 1825, 1050 1795 Z"
+                fill="url(#riverShallows)"
               />
               {/* Deep Water Channel */}
               <path
-                d="M 1040 1720 C 820 1750, 680 1820, 480 1830 C 300 1840, 160 1880, -40 1890 L -40 1950 C 160 1940, 300 1900, 480 1890 C 680 1880, 820 1810, 1040 1780 Z"
+                d="M 1050 1720 C 820 1750, 680 1820, 480 1830 C 300 1840, 160 1880, -50 1890 L -50 1950 C 160 1940, 300 1900, 480 1890 C 680 1880, 820 1810, 1050 1780 Z"
                 fill="url(#riverWater)"
                 filter="url(#landscapeShadow)"
               />
-              {/* Animated Flowing Water Currents */}
+
+              {/* Natural Riverbank Rocks and Boulders */}
+              <g id="river-rocks">
+                <circle cx="210" cy="1860" r="7" fill="#57534e" />
+                <circle cx="212" cy="1858" r="4" fill="#78716c" />
+                <circle cx="340" cy="1825" r="9" fill="#44403c" />
+                <circle cx="342" cy="1822" r="5" fill="#78716c" />
+                <circle cx="610" cy="1805" r="8" fill="#57534e" />
+                <circle cx="612" cy="1803" r="4.5" fill="#a8a29e" />
+                <circle cx="920" cy="1735" r="10" fill="#44403c" />
+                <circle cx="923" cy="1732" r="6" fill="#78716c" />
+                {/* Shoreline Reeds & Grass */}
+                <line x1="280" y1="1832" x2="276" y2="1822" stroke="#4d7c0f" strokeWidth="2" strokeLinecap="round" />
+                <line x1="284" y1="1833" x2="283" y2="1820" stroke="#65a30d" strokeWidth="1.8" strokeLinecap="round" />
+                <line x1="288" y1="1834" x2="291" y2="1823" stroke="#365314" strokeWidth="1.6" strokeLinecap="round" />
+                <line x1="560" y1="1814" x2="557" y2="1804" stroke="#4d7c0f" strokeWidth="2" strokeLinecap="round" />
+                <line x1="565" y1="1815" x2="567" y2="1803" stroke="#65a30d" strokeWidth="1.8" strokeLinecap="round" />
+              </g>
+
+              {/* Multi-Layer Flowing Water Currents (Keyframe Animated) */}
               <path
-                d="M 1020 1740 C 810 1770, 670 1840, 470 1850 C 290 1860, 150 1900, -20 1910"
+                d="M 1030 1738 C 810 1768, 670 1838, 470 1848 C 290 1858, 150 1898, -30 1908"
                 fill="none"
                 stroke="#e0f2fe"
-                strokeWidth="2.5"
+                strokeWidth="2.8"
                 strokeLinecap="round"
                 opacity="0.9"
-                className="anim-river-flow"
+                className="anim-river-flow-1"
               />
               <path
-                d="M 1000 1760 C 790 1790, 650 1860, 450 1870 C 270 1880, 130 1920, -20 1930"
+                d="M 1010 1756 C 790 1786, 650 1856, 450 1866 C 270 1876, 130 1916, -30 1926"
                 fill="none"
                 stroke="#bae6fd"
-                strokeWidth="1.8"
+                strokeWidth="2"
                 strokeLinecap="round"
-                opacity="0.75"
-                className="anim-river-flow"
+                opacity="0.8"
+                className="anim-river-flow-2"
               />
+              <path
+                d="M 990 1772 C 770 1802, 630 1872, 430 1882 C 250 1892, 110 1932, -30 1942"
+                fill="none"
+                stroke="#7dd3fc"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                opacity="0.65"
+                className="anim-river-flow-3"
+              />
+
+              {/* Moored Navigational Channel Buoys */}
+              {/* Starboard Green Conical Buoy */}
+              <g transform="translate(390, 1850)" className="anim-buoy">
+                <circle cx="0" cy="1" r="5" fill="#000000" opacity="0.25" />
+                <polygon points="0,-12 -4,0 4,0" fill="#10b981" stroke="#047857" strokeWidth="0.8" />
+                <circle cx="0" cy="-12" r="2.2" fill="#34d399" className="anim-beacon" />
+              </g>
+              {/* Port Red Cylindrical Buoy */}
+              <g transform="translate(630, 1865)" className="anim-buoy" style={{ animationDelay: "1.4s" }}>
+                <circle cx="0" cy="1" r="5" fill="#000000" opacity="0.25" />
+                <rect x="-4" y="-10" width="8" height="10" rx="1.5" fill="#ef4444" stroke="#b91c1c" strokeWidth="0.8" />
+                <circle cx="0" cy="-11" r="2.2" fill="#f87171" className="anim-beacon" />
+              </g>
 
               {/* PURE SVG NATIVE ANIMATEMOTION: Boat follows the EXACT River Bezier Path with Auto-Rotation */}
               <g>
                 <animateMotion
-                  path="M 1040 1750 C 820 1780, 680 1850, 480 1860 C 300 1870, 160 1910, -60 1920"
+                  path="M 1050 1750 C 820 1780, 680 1850, 480 1860 C 300 1870, 160 1910, -70 1920"
                   rotate="auto"
-                  dur="24s"
+                  dur="22s"
                   repeatCount="indefinite"
                 />
-                {/* Boat Group with Realistic Shape and Stern V-Wake */}
+                {/* Luxury Motor Yacht Cruiser */}
                 <g className="anim-boat-body" transform="scale(-1, 1)">
-                  {/* Expanding Stern V-Wake Water Foam */}
-                  <path
-                    d="M 22 -4 L 55 -16 M 22 4 L 55 16 M 35 -7 L 70 -22 M 35 7 L 70 22"
-                    stroke="#ffffff"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    opacity="0.8"
-                  />
-                  <ellipse cx="26" cy="0" rx="6" ry="3" fill="#e0f2fe" opacity="0.7" />
+                  {/* Expanding Stern V-Wake Water Wash */}
+                  <g id="boat-wake" opacity="0.85">
+                    {/* Primary V-lines */}
+                    <path
+                      d="M 24 -5 L 68 -22 M 24 5 L 68 22"
+                      stroke="#ffffff"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M 38 -8 L 88 -30 M 38 8 L 88 30"
+                      stroke="#e0f2fe"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      opacity="0.7"
+                    />
+                    {/* Churning Propeller Wash Ellipses */}
+                    <ellipse cx="30" cy="0" rx="8" ry="4" fill="#ffffff" opacity="0.75" />
+                    <ellipse cx="46" cy="0" rx="11" ry="5.5" fill="#e0f2fe" opacity="0.5" />
+                    <ellipse cx="66" cy="0" rx="14" ry="7" fill="#bae6fd" opacity="0.3" />
+                  </g>
 
-                  {/* Boat Shadow */}
-                  <ellipse cx="0" cy="3" rx="26" ry="9" fill="#000000" opacity="0.3" filter="url(#landscapeShadow)" />
+                  {/* Boat Shadow in Water */}
+                  <ellipse cx="0" cy="4" rx="30" ry="11" fill="#000000" opacity="0.32" filter="url(#landscapeShadow)" />
 
-                  {/* Sleek Cruiser Hull */}
+                  {/* Hydrodynamic Cruiser Hull with Royal Navy Waterline Stripe */}
                   <path
-                    d="M -26 0 C -20 -9, 14 -9, 24 -7 L 24 7 C 14 9, -20 9, -26 0 Z"
+                    d="M -30 0 C -24 -11, 16 -11, 28 -8 L 28 8 C 16 11, -24 11, -30 0 Z"
                     fill="#ffffff"
                     stroke="#0284c7"
-                    strokeWidth="1.6"
+                    strokeWidth="1.8"
                   />
-                  {/* Teak Wood Deck Inlay */}
-                  <rect x="-10" y="-5" width="24" height="10" rx="2" fill="#d97706" opacity="0.85" />
-                  {/* Cabin with Tinted Curved Glass */}
-                  <path d="M -16 -4 L -2 -4 L 6 -2 L 6 2 L -2 4 L -16 4 Z" fill="#0284c7" />
-                  <rect x="-12" y="-3" width="10" height="6" rx="1.5" fill="#0f172a" />
-                  {/* Stainless Bow Railing & Nav Light */}
-                  <circle cx="-24" cy="0" r="1.8" fill="#f59e0b" />
-                  <circle cx="23" cy="-5" r="1.2" fill="#10b981" />
-                  <circle cx="23" cy="5" r="1.2" fill="#ef4444" />
+                  {/* Navy Blue Waterline Accent Accent */}
+                  <path
+                    d="M -26 -1 C -18 -8, 16 -8, 26 -6 L 26 6 C 16 8, -18 8, -26 1 Z"
+                    fill="#0369a1"
+                    opacity="0.35"
+                  />
+
+                  {/* Teak Wood Aft Deck & Swim Platform */}
+                  <rect x="18" y="-7" width="9" height="14" rx="2" fill="#d97706" />
+                  <line x1="21" y1="-6" x2="21" y2="6" stroke="#92400e" strokeWidth="0.8" />
+                  <line x1="24" y1="-6" x2="24" y2="6" stroke="#92400e" strokeWidth="0.8" />
+
+                  {/* Teak Wood Foredeck Inlay */}
+                  <path d="M -22 0 C -16 -6, -2 -6, 0 -6 L 0 6 C -2 6, -16 6, -22 0 Z" fill="#b45309" opacity="0.85" />
+
+                  {/* Aerodynamic Bridge Superstructure with Tinted Windshield */}
+                  <path d="M -18 -5 L -2 -5 L 14 -3 L 14 3 L -2 5 L -18 5 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
+                  {/* Tinted Panoramic Solar Glass Windshield */}
+                  <path d="M -16 -4 L -3 -4 L 8 -2.5 L 8 2.5 L -3 4 L -16 4 Z" fill="#0f172a" />
+                  <path d="M -14 -3.5 L -4 -3.5 L 4 -2 L 4 2 L -4 3.5 L -14 3.5 Z" fill="#0284c7" opacity="0.75" />
+
+                  {/* Stainless Steel Radar Arch with Rotating Radar Scanner */}
+                  <g transform="translate(6, 0)">
+                    <rect x="-1.5" y="-6" width="3" height="12" rx="1" fill="#e2e8f0" stroke="#64748b" strokeWidth="0.8" />
+                    <g className="anim-radar">
+                      <line x1="-5" y1="0" x2="5" y2="0" stroke="#f8fafc" strokeWidth="2.2" strokeLinecap="round" />
+                      <circle cx="0" cy="0" r="1.5" fill="#0284c7" />
+                    </g>
+                  </g>
+
+                  {/* Stainless Steel Bow Railing & Nav Light */}
+                  <circle cx="-28" cy="0" r="2" fill="#f59e0b" />
+                  {/* Starboard Green Nav Light */}
+                  <circle cx="26" cy="-6" r="1.6" fill="#10b981" />
+                  {/* Port Red Nav Light */}
+                  <circle cx="26" cy="6" r="1.6" fill="#ef4444" />
                 </g>
               </g>
             </g>
@@ -590,80 +779,139 @@ export default function AboutPage() {
             {/* 2. SCENIC RAILWAY TRACK & SMOOTH SHINKANSEN BULLET TRAIN       */}
             {/* ============================================================== */}
             <g id="scenic-railway">
-              {/* Ballast Stone Bed */}
-              <line x1="-80" y1="2640" x2="1080" y2="2520" stroke="#5a524a" strokeWidth="22" strokeLinecap="round" />
-              
-              {/* Wooden Railroad Ties / Sleepers */}
-              {Array.from({ length: 50 }).map((_, i) => {
-                const t = i / 49;
-                const x = -60 + t * 1120;
+              {/* Ballast Stone Bed with Textured Edges */}
+              <line x1="-90" y1="2640" x2="1090" y2="2520" stroke="#44403c" strokeWidth="24" strokeLinecap="round" />
+              <line x1="-90" y1="2640" x2="1090" y2="2520" stroke="#292524" strokeWidth="18" strokeLinecap="round" />
+
+              {/* Concrete Railroad Ties / Sleepers with Tie-Plate Fasteners */}
+              {Array.from({ length: 60 }).map((_, i) => {
+                const t = i / 59;
+                const x = -70 + t * 1140;
                 const y = 2638 - t * 120;
                 return (
-                  <line
-                    key={`tie-${i}`}
-                    x1={x - 1}
-                    y1={y - 9}
-                    x2={x + 1}
-                    y2={y + 9}
-                    stroke="#292524"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                  />
+                  <g key={`tie-${i}`}>
+                    {/* Concrete Sleeper Bar */}
+                    <line
+                      x1={x - 1}
+                      y1={y - 10}
+                      x2={x + 1}
+                      y2={y + 10}
+                      stroke="#78716c"
+                      strokeWidth="4.5"
+                      strokeLinecap="round"
+                    />
+                    {/* Iron Tie Plates at Rail Contacts */}
+                    <circle cx={x - 0.5} cy={y - 4.5} r="1.8" fill="#1c1917" />
+                    <circle cx={x + 0.5} cy={y + 4.5} r="1.8" fill="#1c1917" />
+                  </g>
                 );
               })}
 
-              {/* Steel Twin Rail Tracks */}
-              <line x1="-80" y1="2635" x2="1080" y2="2515" stroke="#e2e8f0" strokeWidth="2.5" />
-              <line x1="-80" y1="2645" x2="1080" y2="2525" stroke="#e2e8f0" strokeWidth="2.5" />
+              {/* Polished Continuous Welded Steel Twin Rails with Chrome Specular Highlight */}
+              {/* Rail 1 (Top) */}
+              <line x1="-90" y1="2635" x2="1090" y2="2515" stroke="#1e293b" strokeWidth="3" />
+              <line x1="-90" y1="2634.5" x2="1090" y2="2514.5" stroke="#ffffff" strokeWidth="1.2" opacity="0.9" />
 
-              {/* PURE SVG NATIVE ANIMATEMOTION: High-Speed Train locked onto Rail Track */}
+              {/* Rail 2 (Bottom) */}
+              <line x1="-90" y1="2645" x2="1090" y2="2525" stroke="#1e293b" strokeWidth="3" />
+              <line x1="-90" y1="2644.5" x2="1090" y2="2524.5" stroke="#ffffff" strokeWidth="1.2" opacity="0.9" />
+
+              {/* Overhead Catenary Electric Gantry Poles (Spaced along track) */}
+              {[180, 520, 860].map((poleX, pIdx) => {
+                const poleY = 2638 - ((poleX + 70) / 1140) * 120;
+                return (
+                  <g key={`catenary-${pIdx}`} transform={`translate(${poleX}, ${poleY})`}>
+                    {/* Steel Lattice Mast Foundation */}
+                    <rect x="-3" y="-18" width="6" height="5" fill="#44403c" rx="1" />
+                    {/* Vertical Mast Pole */}
+                    <line x1="0" y1="-18" x2="0" y2="-28" stroke="#cbd5e1" strokeWidth="2.5" />
+                    {/* Cantilever Cross Arm */}
+                    <line x1="-2" y1="-28" x2="10" y2="-26" stroke="#e2e8f0" strokeWidth="2" />
+                    <circle cx="10" cy="-26" r="1.2" fill="#ef4444" />
+                    {/* Drop Insulator */}
+                    <line x1="10" y1="-26" x2="10" y2="-22" stroke="#64748b" strokeWidth="1.5" />
+                  </g>
+                );
+              })}
+
+              {/* PURE SVG NATIVE ANIMATEMOTION: High-Speed Bullet Train locked onto Rail Track */}
               <g>
                 <animateMotion
-                  path="M -220 2655 L 1220 2505"
+                  path="M -230 2655 L 1230 2505"
                   rotate="auto"
-                  dur="11s"
+                  dur="9.5s"
                   repeatCount="indefinite"
                 />
-                {/* Train Group with 3 Articulated High-Speed Coaches */}
+                {/* High-Speed Bullet Train Consist (Locomotive + Coaches + Tail) */}
                 <g>
-                  {/* Train Ground Shadow */}
-                  <rect x="-170" y="-8" width="340" height="16" rx="6" fill="#000000" opacity="0.35" filter="url(#landscapeShadow)" />
+                  {/* High-Speed Ground Cast Shadow */}
+                  <rect
+                    x="-180"
+                    y="-9"
+                    width="360"
+                    height="18"
+                    rx="8"
+                    fill="#000000"
+                    opacity="0.4"
+                    filter="url(#landscapeShadow)"
+                  />
 
-                  {/* Aerodynamic Locomotive (Front) */}
+                  {/* Forward Xenon Projector Light Beam Cone */}
+                  <polygon
+                    points="180,-4 270,-18 270,18 180,4"
+                    fill="url(#trainHeadlightCone)"
+                  />
+
+                  {/* Aerodynamic Shinkansen Lead Locomotive */}
                   <path
-                    d="M 120 -7 L 172 -3 C 182 0, 182 0, 172 3 L 120 7 Z"
+                    d="M 120 -7.5 L 175 -3.5 C 188 0, 188 0, 175 3.5 L 120 7.5 Z"
                     fill="url(#bulletTrainBody)"
                     stroke="#0284c7"
-                    strokeWidth="1.2"
+                    strokeWidth="1.4"
                   />
-                  {/* Driver Cockpit Windshield */}
-                  <path d="M 140 -5 L 165 -2 L 165 2 L 140 5 Z" fill="#0f172a" />
-                  {/* Front High-Beam Headlights */}
-                  <circle cx="174" cy="0" r="3" fill="#fde047" />
+                  {/* Driver Cockpit Windshield with Cyan Instrument Glow */}
+                  <path d="M 142 -5 L 168 -2 L 168 2 L 142 5 Z" fill="#0f172a" stroke="#0284c7" strokeWidth="0.8" />
+                  <circle cx="152" cy="0" r="1.5" fill="#38bdf8" opacity="0.8" />
 
-                  {/* Passenger Coach 1 */}
-                  <rect x="35" y="-7" width="80" height="14" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
+                  {/* High-Intensity Twin Projector Xenon Headlights */}
+                  <circle cx="178" cy="-2" r="2.4" fill="#ffffff" />
+                  <circle cx="178" cy="2" r="2.4" fill="#ffffff" />
+                  <circle cx="178" cy="0" r="3" fill="#fde047" opacity="0.9" />
+
+                  {/* Coach 1 (Forward Passenger Car) */}
+                  <rect x="35" y="-7.5" width="80" height="15" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
+                  {/* Dark Window Tint Strip */}
                   <rect x="42" y="-4" width="66" height="8" rx="2" fill="#0f172a" />
-                  {/* Interior Window Glow */}
-                  <line x1="45" y1="0" x2="105" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.85" />
-                  {/* Articulated Coupler */}
-                  <line x1="30" y1="0" x2="35" y2="0" stroke="#000000" strokeWidth="4" />
+                  {/* Warm Passenger Cabin Glow */}
+                  <line x1="45" y1="0" x2="105" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.9" />
+                  {/* Inter-Car Aerodynamic Gangway Diaphragm */}
+                  <rect x="28" y="-6" width="7" height="12" rx="1.5" fill="#1e293b" />
 
-                  {/* Passenger Coach 2 (Center) */}
-                  <rect x="-55" y="-7" width="80" height="14" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
+                  {/* Coach 2 (Center Passenger Car with High-Speed Pantograph) */}
+                  <rect x="-55" y="-7.5" width="80" height="15" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
                   <rect x="-48" y="-4" width="66" height="8" rx="2" fill="#0f172a" />
-                  <line x1="-45" y1="0" x2="15" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.85" />
-                  {/* Roof Aerodynamic Pantograph */}
-                  <rect x="-20" y="-8.5" width="12" height="1.5" fill="#d97706" />
-                  <line x1="-60" y1="0" x2="-55" y2="0" stroke="#000000" strokeWidth="4" />
+                  <line x1="-45" y1="0" x2="15" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.9" />
+                  {/* Aerodynamic Single-Arm Pantograph */}
+                  <g transform="translate(-20, -8.5)">
+                    <rect x="-6" y="-2" width="12" height="2" rx="0.5" fill="#d97706" />
+                    <line x1="-3" y1="-2" x2="2" y2="-6" stroke="#f8fafc" strokeWidth="1.4" />
+                    <line x1="2" y1="-6" x2="8" y2="-6" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" />
+                    {/* Intermittent Pantograph Electric Contact Spark */}
+                    <circle cx="8" cy="-6" r="3.5" fill="#38bdf8" className="anim-spark" />
+                  </g>
+                  {/* Inter-Car Diaphragm */}
+                  <rect x="-62" y="-6" width="7" height="12" rx="1.5" fill="#1e293b" />
 
-                  {/* Passenger Coach 3 (Rear) */}
-                  <rect x="-145" y="-7" width="80" height="14" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
+                  {/* Coach 3 (Rear Locomotive / Tail Coach) */}
+                  <rect x="-145" y="-7.5" width="80" height="15" rx="3" fill="url(#bulletTrainBody)" stroke="#38bdf8" strokeWidth="1" />
                   <rect x="-138" y="-4" width="66" height="8" rx="2" fill="#0f172a" />
-                  <line x1="-135" y1="0" x2="-75" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.85" />
-                  {/* Rear Red LED Marker Lights */}
-                  <circle cx="-146" cy="-4" r="2" fill="#ef4444" />
-                  <circle cx="-146" cy="4" r="2" fill="#ef4444" />
+                  <line x1="-135" y1="0" x2="-75" y2="0" stroke="#fef08a" strokeWidth="3" opacity="0.9" />
+                  {/* Rear Tail Nose Taper */}
+                  <path d="M -145 -7.5 L -165 -3.5 L -165 3.5 L -145 7.5 Z" fill="url(#bulletTrainBody)" stroke="#0284c7" strokeWidth="1.2" />
+                  {/* Ruby Red LED Tail Marker Lights */}
+                  <circle cx="-166" cy="-3.5" r="2.4" fill="#ef4444" />
+                  <circle cx="-166" cy="3.5" r="2.4" fill="#ef4444" />
+                  <circle cx="-168" cy="0" r="4" fill="#ef4444" opacity="0.5" />
                 </g>
               </g>
             </g>
@@ -674,42 +922,45 @@ export default function AboutPage() {
             <g id="wind-turbines">
               {/* Wind Turbine 1 (Left flank at Y=1080) */}
               <g transform="translate(100, 1080)">
-                <ellipse cx="0" cy="20" rx="16" ry="6" fill="#000000" opacity="0.18" />
-                {/* Tapered White Mast Tower */}
-                <polygon points="-4,20 4,20 2,0 -2,0" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="0.8" />
-                {/* Central Nacelle Generator Hub */}
-                <circle cx="0" cy="0" r="5" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
-                {/* Spinning 3 Blades with Red Tips */}
+                <ellipse cx="0" cy="20" rx="18" ry="7" fill="#000000" opacity="0.2" />
+                {/* Tapered White Tubular Steel Mast Tower */}
+                <polygon points="-4.5,20 4.5,20 2,0 -2,0" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="1" />
+                {/* Nacelle Generator Hub */}
+                <circle cx="0" cy="0" r="5.5" fill="#e7e5e4" stroke="#78716c" strokeWidth="1.2" />
+                {/* Red Aviation Obstruction Warning Strobe Light */}
+                <circle cx="0" cy="-6" r="2.2" fill="#ef4444" className="anim-beacon" />
+                {/* Spinning 3 Rotor Blades with Red Warning Tips */}
                 <g className="anim-turbine">
-                  <path d="M 0 0 L 2.5 -38 L -2.5 -38 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
-                  <rect x="-2.5" y="-38" width="5" height="6" fill="#ef4444" />
+                  <path d="M 0 0 L 2.8 -40 L -2.8 -40 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.6" />
+                  <rect x="-2.8" y="-40" width="5.6" height="7" fill="#ef4444" />
 
-                  <path d="M 0 0 L 35 19 L 32.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
-                  <circle cx="34" cy="21" r="2.5" fill="#ef4444" />
+                  <path d="M 0 0 L 37 20 L 34 25 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.6" />
+                  <circle cx="36" cy="22" r="2.8" fill="#ef4444" />
 
-                  <path d="M 0 0 L -37 19 L -34.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
-                  <circle cx="-36" cy="21" r="2.5" fill="#ef4444" />
+                  <path d="M 0 0 L -39 20 L -36 25 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.6" />
+                  <circle cx="-38" cy="22" r="2.8" fill="#ef4444" />
 
-                  <circle cx="0" cy="0" r="3" fill="#ef4444" />
+                  <circle cx="0" cy="0" r="3.2" fill="#ef4444" />
                 </g>
               </g>
 
               {/* Wind Turbine 2 (Right flank at Y=3550) */}
               <g transform="translate(890, 3550)">
-                <ellipse cx="0" cy="20" rx="16" ry="6" fill="#000000" opacity="0.18" />
-                <polygon points="-4,20 4,20 2,0 -2,0" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="0.8" />
-                <circle cx="0" cy="0" r="5" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
-                <g className="anim-turbine" style={{ animationDuration: "5.4s" }}>
-                  <path d="M 0 0 L 2.5 -38 L -2.5 -38 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
-                  <rect x="-2.5" y="-38" width="5" height="6" fill="#ef4444" />
+                <ellipse cx="0" cy="20" rx="18" ry="7" fill="#000000" opacity="0.2" />
+                <polygon points="-4.5,20 4.5,20 2,0 -2,0" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="1" />
+                <circle cx="0" cy="0" r="5.5" fill="#e7e5e4" stroke="#78716c" strokeWidth="1.2" />
+                <circle cx="0" cy="-6" r="2.2" fill="#ef4444" className="anim-beacon" style={{ animationDelay: "0.7s" }} />
+                <g className="anim-turbine" style={{ animationDuration: "5.2s" }}>
+                  <path d="M 0 0 L 2.8 -40 L -2.8 -40 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.6" />
+                  <rect x="-2.8" y="-40" width="5.6" height="7" fill="#ef4444" />
 
-                  <path d="M 0 0 L 35 19 L 32.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
-                  <circle cx="34" cy="21" r="2.5" fill="#ef4444" />
+                  <path d="M 0 0 L 37 20 L 34 25 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.6" />
+                  <circle cx="36" cy="22" r="2.8" fill="#ef4444" />
 
-                  <path d="M 0 0 L -37 19 L -34.5 24 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.5" />
-                  <circle cx="-36" cy="21" r="2.5" fill="#ef4444" />
+                  <path d="M 0 0 L -39 20 L -36 25 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.6" />
+                  <circle cx="-38" cy="22" r="2.8" fill="#ef4444" />
 
-                  <circle cx="0" cy="0" r="3" fill="#ef4444" />
+                  <circle cx="0" cy="0" r="3.2" fill="#ef4444" />
                 </g>
               </g>
             </g>
@@ -720,43 +971,43 @@ export default function AboutPage() {
             <g id="roadside-trees">
               {/* Tree clusters near Station 1 (Left flank) */}
               <g transform="translate(130, 480)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="18" fill="#4d7c0f" />
-                <circle cx="-4" cy="-4" r="13" fill="#365314" />
-                <circle cx="3" cy="3" r="7" fill="#65a30d" />
+                <circle cx="0" cy="0" r="19" fill="#4d7c0f" />
+                <circle cx="-4" cy="-4" r="14" fill="#365314" />
+                <circle cx="3" cy="3" r="8" fill="#65a30d" />
               </g>
               <g transform="translate(90, 560)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="22" fill="#b45309" />
-                <circle cx="-5" cy="-5" r="15" fill="#78350f" />
-                <circle cx="4" cy="2" r="8" fill="#d97706" />
+                <circle cx="0" cy="0" r="23" fill="#b45309" />
+                <circle cx="-5" cy="-5" r="16" fill="#78350f" />
+                <circle cx="4" cy="2" r="9" fill="#d97706" />
               </g>
 
               {/* Tree clusters near River (Right flank) */}
               <g transform="translate(890, 1680)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="24" fill="#365314" />
-                <circle cx="-6" cy="-6" r="16" fill="#14532d" />
-                <circle cx="4" cy="3" r="9" fill="#4d7c0f" />
+                <circle cx="0" cy="0" r="25" fill="#365314" />
+                <circle cx="-6" cy="-6" r="17" fill="#14532d" />
+                <circle cx="4" cy="3" r="10" fill="#4d7c0f" />
               </g>
               <g transform="translate(930, 1750)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="20" fill="#4d7c0f" />
-                <circle cx="-4" cy="-3" r="12" fill="#15803d" />
+                <circle cx="0" cy="0" r="21" fill="#4d7c0f" />
+                <circle cx="-4" cy="-3" r="13" fill="#15803d" />
               </g>
 
               {/* Tree clusters near Railway (Left flank) */}
               <g transform="translate(80, 2480)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="22" fill="#ca8a04" />
-                <circle cx="-5" cy="-4" r="14" fill="#854d0e" />
+                <circle cx="0" cy="0" r="23" fill="#ca8a04" />
+                <circle cx="-5" cy="-4" r="15" fill="#854d0e" />
               </g>
 
               {/* Tree clusters near Destination (Left flank) */}
               <g transform="translate(120, 4520)" filter="url(#landscapeShadow)">
-                <circle cx="0" cy="0" r="24" fill="#14532d" />
-                <circle cx="-5" cy="-5" r="16" fill="#052e16" />
-                <circle cx="4" cy="2" r="8" fill="#166534" />
+                <circle cx="0" cy="0" r="25" fill="#14532d" />
+                <circle cx="-5" cy="-5" r="17" fill="#052e16" />
+                <circle cx="4" cy="2" r="9" fill="#166534" />
               </g>
             </g>
 
             {/* ============================================================== */}
-            {/* HIGHWAY ROADWAY, OVERPASSES & CAR PARKING BAY                   */}
+            {/* 5. HIGHWAY ROADWAY, OVERPASSES & CAR PARKING BAY               */}
             {/* ============================================================== */}
 
             {/* Roadbed Outer Curb / Shoulder */}
@@ -786,6 +1037,14 @@ export default function AboutPage() {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
+            {/* Solid White Outer Lane Margins */}
+            <path
+              d={pathD}
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="1.4"
+              strokeOpacity="0.8"
+            />
             {/* White Center Dashed Lane Divider */}
             <path
               d={pathD}
@@ -796,16 +1055,112 @@ export default function AboutPage() {
               strokeLinecap="round"
             />
 
-            {/* HIGHWAY RIVER BRIDGE OVERPASS (Concrete Barriers where road crosses river) */}
-            <g id="river-bridge-barriers">
-              <rect x="752" y="1720" width="6" height="75" rx="2" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
-              <rect x="802" y="1720" width="6" height="75" rx="2" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
+            {/* ============================================================== */}
+            {/* 6. GRAND ARCHITECTURAL RIVER VIADUCT BRIDGE (X=780, Y=1715-1845)*/}
+            {/* ============================================================== */}
+            <g id="river-viaduct-bridge">
+              {/* Heavy Cast Shadow from Elevated Bridge Deck onto River Water */}
+              <rect
+                x="758"
+                y="1725"
+                width="62"
+                height="105"
+                rx="6"
+                fill="#000000"
+                opacity="0.45"
+                filter="url(#bridgeDeepShadow)"
+              />
+
+              {/* Concrete Bridge Abutments on Riverbanks */}
+              {/* North Bank Abutment (Y=1715) */}
+              <rect x="746" y="1710" width="68" height="12" rx="3" fill="url(#concreteStructure)" stroke="#57534e" strokeWidth="1" />
+              {/* South Bank Abutment (Y=1835) */}
+              <rect x="746" y="1832" width="68" height="12" rx="3" fill="url(#concreteStructure)" stroke="#57534e" strokeWidth="1" />
+
+              {/* Heavy Concrete Piers Rooted in the River Water */}
+              {/* Pier 1 (Water entry at Y=1755) */}
+              <g transform="translate(780, 1755)">
+                {/* Water wake foam around pier base */}
+                <ellipse cx="0" cy="0" rx="32" ry="8" fill="#e0f2fe" opacity="0.6" />
+                <rect x="-26" y="-5" width="52" height="10" rx="5" fill="#44403c" stroke="#292524" strokeWidth="1.2" />
+                <rect x="-24" y="-4" width="48" height="8" rx="4" fill="url(#concreteStructure)" />
+              </g>
+
+              {/* Pier 2 (Water entry at Y=1800) */}
+              <g transform="translate(780, 1800)">
+                <ellipse cx="0" cy="0" rx="32" ry="8" fill="#e0f2fe" opacity="0.6" />
+                <rect x="-26" y="-5" width="52" height="10" rx="5" fill="#44403c" stroke="#292524" strokeWidth="1.2" />
+                <rect x="-24" y="-4" width="48" height="8" rx="4" fill="url(#concreteStructure)" />
+              </g>
+
+              {/* Elevated Bridge Road Deck Slab with Concrete Curbs */}
+              <rect x="752" y="1714" width="56" height="130" rx="4" fill="#292524" stroke="#78716c" strokeWidth="1" />
+              <rect x="756" y="1714" width="48" height="130" fill="#181615" />
+              {/* Bridge Deck Center Line */}
+              <line x1="780" y1="1714" x2="780" y2="1844" stroke="#ffffff" strokeWidth="2.5" strokeDasharray="16 14" />
+
+              {/* Steel Safety Railing Balusters (Left & Right Sides) */}
+              {Array.from({ length: 14 }).map((_, i) => (
+                <React.Fragment key={`viaduct-baluster-${i}`}>
+                  {/* Left Baluster Post */}
+                  <line x1="752" y1={1718 + i * 9.5} x2="755" y2={1718 + i * 9.5} stroke="#f8fafc" strokeWidth="2" strokeLinecap="round" />
+                  {/* Right Baluster Post */}
+                  <line x1="805" y1={1718 + i * 9.5} x2="808" y2={1718 + i * 9.5} stroke="#f8fafc" strokeWidth="2" strokeLinecap="round" />
+                </React.Fragment>
+              ))}
+              {/* Continuous Top Handrails */}
+              <line x1="752" y1="1714" x2="752" y2="1844" stroke="#e2e8f0" strokeWidth="3" strokeLinecap="round" />
+              <line x1="808" y1="1714" x2="808" y2="1844" stroke="#e2e8f0" strokeWidth="3" strokeLinecap="round" />
+
+              {/* Maritime River Clearance Beacon Lights on Bridge Underside */}
+              <circle cx="750" cy="1775" r="2.5" fill="#ef4444" className="anim-beacon" />
+              <circle cx="810" cy="1775" r="2.5" fill="#10b981" className="anim-beacon" />
             </g>
 
-            {/* HIGHWAY RAILWAY FLYOVER OVERPASS (Safety Barriers where road crosses train track) */}
-            <g id="rail-bridge-barriers">
-              <rect x="192" y="2540" width="6" height="80" rx="2" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
-              <rect x="242" y="2540" width="6" height="80" rx="2" fill="#e7e5e4" stroke="#78716c" strokeWidth="1" />
+            {/* ============================================================== */}
+            {/* 7. HIGHWAY RAILWAY FLYOVER OVERPASS (X=220, Y=2540-2645)        */}
+            {/* ============================================================== */}
+            <g id="rail-flyover-overpass">
+              {/* Heavy Cast Shadow across Ballast and Rails */}
+              <rect
+                x="198"
+                y="2545"
+                width="64"
+                height="100"
+                rx="6"
+                fill="#000000"
+                opacity="0.55"
+                filter="url(#bridgeDeepShadow)"
+              />
+
+              {/* Reinforced Concrete Abutment Walls */}
+              <rect x="186" y="2536" width="68" height="12" rx="3" fill="url(#concreteStructure)" stroke="#44403c" strokeWidth="1" />
+              <rect x="186" y="2638" width="68" height="12" rx="3" fill="url(#concreteStructure)" stroke="#44403c" strokeWidth="1" />
+
+              {/* Center Pier Column with Black & Yellow Chevron Hazard Striping */}
+              <g transform="translate(220, 2590)">
+                <rect x="-18" y="-4" width="36" height="8" rx="2" fill="#18181b" />
+                <rect x="-16" y="-3" width="32" height="6" rx="1.5" fill="#eab308" />
+                {/* Hazard Warning Stripes */}
+                <line x1="-12" y1="-3" x2="-8" y2="3" stroke="#000000" strokeWidth="2.5" />
+                <line x1="-4" y1="-3" x2="0" y2="3" stroke="#000000" strokeWidth="2.5" />
+                <line x1="4" y1="-3" x2="8" y2="3" stroke="#000000" strokeWidth="2.5" />
+                <line x1="12" y1="-3" x2="16" y2="3" stroke="#000000" strokeWidth="2.5" />
+              </g>
+
+              {/* Elevated Bridge Road Deck Slab */}
+              <rect x="192" y="2540" width="56" height="106" rx="4" fill="#292524" stroke="#78716c" strokeWidth="1" />
+              <rect x="196" y="2540" width="48" height="106" fill="#181615" />
+              <line x1="220" y1="2540" x2="220" y2="2646" stroke="#ffffff" strokeWidth="2.5" strokeDasharray="16 14" />
+
+              {/* Jersey Crash Barriers & Reflectors */}
+              <rect x="190" y="2540" width="5" height="106" rx="2" fill="#e2e8f0" stroke="#78716c" strokeWidth="0.8" />
+              <rect x="245" y="2540" width="5" height="106" rx="2" fill="#e2e8f0" stroke="#78716c" strokeWidth="0.8" />
+              {/* Safety Amber Reflectors */}
+              <circle cx="192.5" cy="2565" r="1.5" fill="#f59e0b" />
+              <circle cx="192.5" cy="2620" r="1.5" fill="#f59e0b" />
+              <circle cx="247.5" cy="2565" r="1.5" fill="#f59e0b" />
+              <circle cx="247.5" cy="2620" r="1.5" fill="#f59e0b" />
             </g>
 
             {/* Reference Path for Length Measurement */}
@@ -874,7 +1229,7 @@ export default function AboutPage() {
               );
             })}
 
-            {/* 6. Executive Reserved Parking Stall at Destination (coordY ~4650, coordX: 220) */}
+            {/* 8. Executive Reserved Parking Stall at Destination (coordY ~4650, coordX: 220) */}
             <g transform="translate(220, 4650)">
               {/* Paved Parking Apron */}
               <rect
@@ -959,7 +1314,7 @@ export default function AboutPage() {
             </g>
 
             {/* ============================================================== */}
-            {/* HYPER-REALISTIC 2D TOP-DOWN GT SPORTS COUPE (Ref-Driven 120fps) */}
+            {/* 9. HYPER-REALISTIC 2D TOP-DOWN GT SPORTS COUPE (120fps Ref)    */}
             {/* ============================================================== */}
             <g
               ref={carGroupRef}
@@ -972,7 +1327,7 @@ export default function AboutPage() {
                 fill="url(#headlightBeam)"
               />
 
-              {/* Forward Navigation Guidance Arrow (Mounted ahead of the bumper) */}
+              {/* Forward Navigation Guidance Arrow (Mounted ahead of bumper) */}
               <g transform="translate(46, 0)">
                 <polygon
                   points="14,0 0,-8 3.5,0 0,8"
@@ -982,7 +1337,7 @@ export default function AboutPage() {
                 />
               </g>
 
-              {/* 4 Performance Wheels with Realistic Tires, Alloy Rims, Calipers & Steerable Front Wheels */}
+              {/* 4 Performance Wheels with Steerable Front Wheels */}
               {/* Front-Left Wheel (Rotates dynamically with steering angle via ref) */}
               <g ref={frontLeftWheelRef} transform="translate(14, -17)">
                 <rect x="-10" y="-3" width="20" height="6" rx="2" fill="#090807" />
@@ -1070,9 +1425,9 @@ export default function AboutPage() {
             </g>
 
             {/* ============================================================== */}
-            {/* CLOUDS MOVING ON TOP OF EVERY OBJECT (User requested: Top Layer)*/}
+            {/* 10. CLOUDS MOVING ON TOP OF EVERY OBJECT (Top Layer)           */}
             {/* ============================================================== */}
-            <g id="clouds-top-overlay" opacity="0.75">
+            <g id="clouds-top-overlay" opacity="0.8">
               {/* Cloud 1 - Top Sky High Layer */}
               <g className="anim-cloud-top-1">
                 <path
@@ -1082,7 +1437,7 @@ export default function AboutPage() {
                 />
               </g>
 
-              {/* Cloud 2 - Mid Landscape High Layer */}
+              {/* Cloud 2 - Mid Landscape High Layer (Crossing over river & viaduct) */}
               <g className="anim-cloud-top-2">
                 <path
                   d="M 680 1950 Q 720 1910 760 1925 Q 810 1900 850 1935 Q 890 1920 910 1960 Q 920 2000 880 2015 Q 830 2025 770 2015 Q 710 2025 680 1990 Q 665 1965 680 1950 Z"
@@ -1091,7 +1446,7 @@ export default function AboutPage() {
                 />
               </g>
 
-              {/* Cloud 3 - Lower Route High Layer */}
+              {/* Cloud 3 - Lower Route High Layer (Crossing over rail & overpass) */}
               <g className="anim-cloud-top-3">
                 <path
                   d="M 220 3350 Q 260 3310 300 3325 Q 350 3300 390 3335 Q 430 3320 450 3360 Q 460 3400 420 3415 Q 370 3425 310 3415 Q 250 3425 220 3390 Q 205 3365 220 3350 Z"
@@ -1108,38 +1463,38 @@ export default function AboutPage() {
 
           {/* STATION 1: ORIGIN NARRATIVE (Road is on Left at X=220, Card is on RIGHT flank) */}
           <div
-            className="absolute left-4 lg:left-[44%] right-4 lg:right-6 max-w-xl pointer-events-auto transition-all duration-300"
+            className="absolute left-[26%] sm:left-[30%] lg:left-[44%] right-2 sm:right-6 max-w-xl pointer-events-auto transition-all duration-300"
             style={{ top: "420px" }}
           >
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
+            <div className="glass-card p-4 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center gap-2 mb-2 text-stone-700 text-xs font-mono font-semibold">
                 <span className="w-2 h-2 rounded-full bg-amber-500" />
                 <span>ROOTS &amp; FOUNDATIONS</span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
+              <h2 className="text-lg sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
                 Engineering scalable solutions
-                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                <span className="block text-amber-900 font-serif lowercase italic text-xl sm:text-2xl">
                   from concept to high-volume production.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-4 sm:mb-5">
                 B.Sc. in Computer Science &amp; Engineering graduate from Dhaka International University. Proven track record leading projects across web, mobile, e-commerce, and cybersecurity threat detection platforms.
               </p>
 
-              <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
-                <div className="p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
-                  <span className="block text-xl font-bold text-stone-900">4+</span>
-                  <span className="text-[11px] font-mono text-stone-500">Years Experience</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
+                  <span className="block text-lg sm:text-xl font-bold text-stone-900">4+</span>
+                  <span className="text-[10px] sm:text-[11px] font-mono text-stone-500">Years Experience</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
-                  <span className="block text-xl font-bold text-amber-800">35+</span>
-                  <span className="text-[11px] font-mono text-stone-500">Projects Shipped</span>
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
+                  <span className="block text-lg sm:text-xl font-bold text-amber-800">35+</span>
+                  <span className="text-[10px] sm:text-[11px] font-mono text-stone-500">Projects Shipped</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
-                  <span className="block text-xl font-bold text-stone-900">100%</span>
-                  <span className="text-[11px] font-mono text-stone-500">Client Satisfaction</span>
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-white/85 border border-stone-200/70 text-center shadow-sm">
+                  <span className="block text-lg sm:text-xl font-bold text-stone-900">100%</span>
+                  <span className="text-[10px] sm:text-[11px] font-mono text-stone-500">Client Satisfaction</span>
                 </div>
               </div>
             </div>
@@ -1147,28 +1502,28 @@ export default function AboutPage() {
 
           {/* STATION 2: PHILOSOPHY & ART DIRECTION (Road is on Right at X=780, Card is on LEFT flank) */}
           <div
-            className="absolute left-4 lg:left-6 right-4 lg:right-[44%] max-w-xl pointer-events-auto transition-all duration-300"
+            className="absolute left-2 sm:left-6 right-[26%] sm:right-[30%] lg:right-[44%] max-w-xl pointer-events-auto transition-all duration-300"
             style={{ top: "1180px" }}
           >
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
+            <div className="glass-card p-4 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center gap-2 mb-2 text-amber-900 text-xs font-mono font-semibold">
                 <Palette className="w-4 h-4" />
                 <span>DESIGN SYSTEMS &amp; ARCHITECTURE</span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
+              <h2 className="text-lg sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
                 Clean code meets intuitive UI.
-                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                <span className="block text-amber-900 font-serif lowercase italic text-xl sm:text-2xl">
                   Built for performance, clarity and scale.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-4 sm:mb-5">
                 Every interface is crafted with pixel precision in Figma, engineered with modern component architectures, and optimized for sub-second load times across mobile and desktop devices.
               </p>
 
               {/* Interactive Typography Playground Fragment */}
-              <div className="p-4 rounded-2xl bg-white/95 border border-stone-200 shadow-sm mb-4">
+              <div className="p-3 sm:p-4 rounded-2xl bg-white/95 border border-stone-200 shadow-sm mb-4">
                 <div className="flex items-center justify-between text-xs font-mono text-stone-500 mb-2">
                   <span>UI TYPOGRAPHY PREVIEW</span>
                   <div className="flex gap-1">
@@ -1190,29 +1545,29 @@ export default function AboutPage() {
 
                 <div className="py-2 border-t border-stone-100">
                   {activeTypographyStyle === "editorial" && (
-                    <div className="font-serif italic text-lg sm:text-xl text-stone-900 leading-snug">
+                    <div className="font-serif italic text-base sm:text-xl text-stone-900 leading-snug">
                       &ldquo;Form follows purpose. Crafting memorable, high-converting digital products.&rdquo;
                     </div>
                   )}
                   {activeTypographyStyle === "brutalist" && (
-                    <div className="font-mono text-sm sm:text-base font-bold text-stone-950 tracking-tighter uppercase leading-tight">
+                    <div className="font-mono text-xs sm:text-base font-bold text-stone-950 tracking-tighter uppercase leading-tight">
                       [FAST_EXECUTION :: FULL_STACK_AGILITY // SCALABLE_SYSTEMS]
                     </div>
                   )}
                   {activeTypographyStyle === "modern" && (
-                    <div className="font-sans font-extrabold text-base sm:text-lg text-stone-900 tracking-tight leading-snug">
+                    <div className="font-sans font-extrabold text-sm sm:text-lg text-stone-900 tracking-tight leading-snug">
                       Responsive multi-device interfaces with zero layout shifts and seamless animations.
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {["Responsive Web Design", "Figma Design Systems", "API Architecture", "SEO Optimization"].map(
                   (tag) => (
                     <span
                       key={tag}
-                      className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-stone-100/90 text-stone-700 border border-stone-200/80"
+                      className="text-[10px] sm:text-[11px] font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-stone-100/90 text-stone-700 border border-stone-200/80"
                     >
                       ✓ {tag}
                     </span>
@@ -1224,53 +1579,53 @@ export default function AboutPage() {
 
           {/* STATION 3: CREATIVE ENGINEERING (Road is on Left at X=220, Card is on RIGHT flank) */}
           <div
-            className="absolute left-4 lg:left-[44%] right-4 lg:right-6 max-w-xl pointer-events-auto transition-all duration-300"
+            className="absolute left-[26%] sm:left-[30%] lg:left-[44%] right-2 sm:right-6 max-w-xl pointer-events-auto transition-all duration-300"
             style={{ top: "2020px" }}
           >
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
+            <div className="glass-card p-4 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center gap-2 mb-2 text-emerald-800 text-xs font-mono font-semibold">
                 <Code2 className="w-4 h-4" />
                 <span>FULL-STACK TECH STACK</span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
+              <h2 className="text-lg sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
                 Modern full-stack engines.
-                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                <span className="block text-amber-900 font-serif lowercase italic text-xl sm:text-2xl">
                   React, Node.js, Laravel &amp; Flutter.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-4 sm:mb-5">
                 From high-concurrency Node.js and Laravel backends to fluid React frontends and cross-platform Flutter apps. End-to-end integration with payment gateways, automated booking engines, and security monitoring.
               </p>
 
               {/* Live Architecture Matrix */}
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">FRONT-END &amp; MOBILE</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-5">
+                <div className="p-3 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-stone-500">FRONT-END &amp; MOBILE</span>
                   <span className="text-xs font-bold text-stone-900">React, Next.js, Flutter</span>
                   <span className="text-[10px] text-stone-600">TypeScript, Flutter Flow, Tailwind CSS</span>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">BACK-END &amp; CMS</span>
+                <div className="p-3 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-stone-500">BACK-END &amp; CMS</span>
                   <span className="text-xs font-bold text-stone-900">Node.js, Laravel, WordPress</span>
                   <span className="text-[10px] text-stone-600">REST APIs, Shopify, Joomla, MySQL</span>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">SECURITY &amp; DEVOPS</span>
+                <div className="p-3 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-stone-500">SECURITY &amp; DEVOPS</span>
                   <span className="text-xs font-bold text-stone-900">Threat Detection, CI/CD</span>
                   <span className="text-[10px] text-stone-600">Malware &amp; Phishing defense, Cloud deploy</span>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
-                  <span className="text-[11px] font-mono text-stone-500">PRODUCTIVITY &amp; TOOLS</span>
+                <div className="p-3 rounded-2xl bg-white/95 border border-stone-200 shadow-sm flex flex-col gap-1">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-stone-500">PRODUCTIVITY &amp; TOOLS</span>
                   <span className="text-xs font-bold text-emerald-800">Figma, VS Code, Git</span>
                   <span className="text-[10px] text-stone-600">Photoshop, Project Scheduling, SEO</span>
                 </div>
               </div>
 
               {/* Terminal Code Snippet */}
-              <div className="glass-dark p-4 rounded-2xl font-mono text-xs shadow-inner">
-                <div className="flex items-center gap-1.5 text-stone-400 text-[11px] pb-2 border-b border-stone-700/80 mb-2">
+              <div className="glass-dark p-3 sm:p-4 rounded-2xl font-mono text-[11px] sm:text-xs shadow-inner overflow-x-auto">
+                <div className="flex items-center gap-1.5 text-stone-400 text-[10px] sm:text-[11px] pb-2 border-b border-stone-700/80 mb-2">
                   <Terminal className="w-3.5 h-3.5" />
                   <span>shohag-hossen/fullstack.config.ts</span>
                 </div>
@@ -1296,23 +1651,23 @@ export default function AboutPage() {
 
           {/* STATION 4: PROVEN TRACK RECORD & FLAGSHIPS (Road is on Right at X=780, Card is on LEFT flank) */}
           <div
-            className="absolute left-4 lg:left-6 right-4 lg:right-[44%] max-w-xl pointer-events-auto transition-all duration-300"
+            className="absolute left-2 sm:left-6 right-[26%] sm:right-[30%] lg:right-[44%] max-w-xl pointer-events-auto transition-all duration-300"
             style={{ top: "2880px" }}
           >
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
+            <div className="glass-card p-4 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center gap-2 mb-2 text-stone-700 text-xs font-mono font-semibold">
                 <Briefcase className="w-4 h-4 text-amber-700" />
                 <span>FLAGSHIP DELIVERABLES &amp; APPS</span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
+              <h2 className="text-lg sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
                 Delivered across industries.
-                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                <span className="block text-amber-900 font-serif lowercase italic text-xl sm:text-2xl">
                   Agency platforms, apps &amp; cyber systems.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-4 sm:mb-5">
                 Demonstrated success in launching complex booking platforms, responsive agency portals, e-commerce storefronts, and research thesis cybersecurity platforms.
               </p>
 
@@ -1322,7 +1677,7 @@ export default function AboutPage() {
                   <button
                     key={proj.id}
                     onClick={() => setActiveProjectIdx(idx)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-mono shrink-0 transition-all cursor-pointer ${
+                    className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-mono shrink-0 transition-all cursor-pointer ${
                       activeProjectIdx === idx
                         ? "bg-stone-900 text-white font-bold shadow-md"
                         : "bg-white/80 text-stone-700 hover:bg-stone-100 border border-stone-200"
@@ -1337,7 +1692,7 @@ export default function AboutPage() {
               {(() => {
                 const proj = PROJECTS[activeProjectIdx] || PROJECTS[0];
                 return (
-                  <div className="p-4 sm:p-5 rounded-2xl bg-white/95 border border-stone-200/90 shadow-md">
+                  <div className="p-3.5 sm:p-5 rounded-2xl bg-white/95 border border-stone-200/90 shadow-md">
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-mono text-xs font-bold text-stone-900 uppercase">
                         {proj.title}
@@ -1380,10 +1735,10 @@ export default function AboutPage() {
 
           {/* STATION 5: WORK METHODOLOGY (Road is on Left at X=220, Card is on RIGHT flank) */}
           <div
-            className="absolute left-4 lg:left-[44%] right-4 lg:right-6 max-w-xl pointer-events-auto transition-all duration-300"
+            className="absolute left-[26%] sm:left-[30%] lg:left-[44%] right-2 sm:right-6 max-w-xl pointer-events-auto transition-all duration-300"
             style={{ top: "3720px" }}
           >
-            <div className="glass-card p-6 sm:p-7 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
+            <div className="glass-card p-4 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2 text-stone-800 text-xs font-mono font-semibold">
                   <Sliders className="w-4 h-4 text-amber-700" />
@@ -1394,9 +1749,9 @@ export default function AboutPage() {
                 </span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-2 leading-tight">
+              <h2 className="text-lg sm:text-2xl font-extrabold uppercase text-stone-950 mb-2 leading-tight">
                 From technical scoping
-                <span className="block text-amber-900 font-serif lowercase italic text-2xl">
+                <span className="block text-amber-900 font-serif lowercase italic text-xl sm:text-2xl">
                   to secure, on-time launch.
                 </span>
               </h2>
@@ -1411,7 +1766,7 @@ export default function AboutPage() {
                   <button
                     key={step.number}
                     onClick={() => setActiveStepIdx(idx)}
-                    className={`px-2.5 py-1 rounded-full transition-all duration-200 cursor-pointer shrink-0 text-[11px] ${
+                    className={`px-2 sm:px-2.5 py-1 rounded-full transition-all duration-200 cursor-pointer shrink-0 text-[10px] sm:text-[11px] ${
                       activeStepIdx === idx
                         ? "bg-stone-900 text-white font-bold shadow-sm"
                         : "text-stone-600 hover:text-stone-900 hover:bg-white/60"
@@ -1426,17 +1781,17 @@ export default function AboutPage() {
               {(() => {
                 const step = PROCESS_STEPS[activeStepIdx];
                 return (
-                  <div className="p-4 rounded-2xl bg-white/95 border border-stone-200/80 shadow-md">
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-white/95 border border-stone-200/80 shadow-md">
                     <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                      <div className="flex items-center gap-2 sm:gap-2.5">
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">
                           {step.number}
                         </div>
                         <div>
-                          <div className="font-bold text-sm text-stone-900 uppercase">
+                          <div className="font-bold text-xs sm:text-sm text-stone-900 uppercase">
                             {step.title}
                           </div>
-                          <div className="text-[10px] font-mono text-stone-500">
+                          <div className="text-[9px] sm:text-[10px] font-mono text-stone-500">
                             {step.phase}
                           </div>
                         </div>
@@ -1445,14 +1800,14 @@ export default function AboutPage() {
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => setActiveStepIdx((prev) => (prev > 0 ? prev - 1 : PROCESS_STEPS.length - 1))}
-                          className="px-2 py-1 rounded-lg text-xs font-mono text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer"
+                          className="px-2 py-1 rounded-lg text-[10px] sm:text-xs font-mono text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer"
                           aria-label="Previous step"
                         >
                           ‹ PREV
                         </button>
                         <button
                           onClick={() => setActiveStepIdx((prev) => (prev < PROCESS_STEPS.length - 1 ? prev + 1 : 0))}
-                          className="px-2 py-1 rounded-lg text-xs font-mono text-stone-900 font-bold hover:bg-stone-100 transition-colors cursor-pointer"
+                          className="px-2 py-1 rounded-lg text-[10px] sm:text-xs font-mono text-stone-900 font-bold hover:bg-stone-100 transition-colors cursor-pointer"
                           aria-label="Next step"
                         >
                           NEXT ›
@@ -1468,7 +1823,7 @@ export default function AboutPage() {
                       {step.deliverables.map((d) => (
                         <span
                           key={d}
-                          className="text-[10px] font-mono text-stone-700 bg-stone-100/90 px-2 py-0.5 rounded-md"
+                          className="text-[9px] sm:text-[10px] font-mono text-stone-700 bg-stone-100/90 px-2 py-0.5 rounded-md"
                         >
                           ✓ {d}
                         </span>
@@ -1482,18 +1837,18 @@ export default function AboutPage() {
 
           {/* STATION 6: FINAL DESTINATION CARD (Road & Parking Stall on Left at X=220, Card is on RIGHT flank beside Parking Stall) */}
           <div
-            className="absolute left-4 lg:left-[44%] right-4 lg:right-6 max-w-xl pointer-events-auto transition-all duration-300"
+            className="absolute left-[26%] sm:left-[30%] lg:left-[44%] right-2 sm:right-6 max-w-xl pointer-events-auto transition-all duration-300"
             style={{ top: "4460px" }}
           >
-            <div className="glass-card p-8 sm:p-10 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85 text-left">
+            <div className="glass-card p-4 sm:p-8 lg:p-10 rounded-2xl sm:rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85 text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900 text-stone-100 text-xs font-mono mb-4 shadow-md">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                 <span>{isParked ? "DESTINATION REACHED • PARKED" : "DESTINATION AHEAD"}</span>
               </div>
 
-              <h2 className="text-2xl sm:text-4xl font-extrabold uppercase text-stone-950 mb-3 tracking-tight leading-tight">
+              <h2 className="text-xl sm:text-4xl font-extrabold uppercase text-stone-950 mb-3 tracking-tight leading-tight">
                 PARKED &amp; READY TO
-                <span className="block text-amber-900 font-serif lowercase italic text-3xl sm:text-5xl">
+                <span className="block text-amber-900 font-serif lowercase italic text-2xl sm:text-5xl">
                   build your next flagship.
                 </span>
               </h2>

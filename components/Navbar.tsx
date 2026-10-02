@@ -49,15 +49,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </Link>
 
-          {/* Frosted Glass Action CTA (Right Side) */}
+          {/* Frosted Glass Action CTA with Pure Black Text (Right Side) */}
           <div className="pointer-events-auto flex items-center gap-2 md:gap-3">
             <button
               onClick={onOpenContactModal}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-full glass-card bg-stone-900/90 hover:bg-stone-900 text-stone-100 border border-white/30 hover:border-white/50 text-xs font-semibold tracking-wide transition-all duration-300 shadow-xl hover:shadow-2xl backdrop-blur-xl cursor-pointer group"
+              className="flex items-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full glass-card bg-white/80 hover:bg-white text-stone-950 border border-white/90 text-xs font-bold tracking-wide transition-all duration-300 shadow-lg hover:shadow-xl backdrop-blur-xl cursor-pointer group"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-300 group-hover:rotate-12 transition-transform" />
-              <span>LET&apos;S TALK</span>
-              <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-600 group-hover:rotate-12 transition-transform" />
+              <span className="text-stone-950 font-bold">LET&apos;S TALK</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-stone-950 opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>
         </div>

@@ -31,6 +31,17 @@ import { Navbar } from "@/components/Navbar";
 import { ContactModal } from "@/components/modals/ContactModal";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
+const LinkedinIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.45a1.6 1.6 0 0 0-1.6 1.6 1.6 1.6 0 0 0 1.6 1.6 1.6 1.6 0 0 0 1.6-1.6 1.6 1.6 0 0 0-1.6-1.6Z" />
+  </svg>
+);
+
 type SectionTab = "all" | "experience" | "skills" | "projects" | "education";
 
 export default function CVPage() {
@@ -203,11 +214,33 @@ export default function CVPage() {
                     <Copy className="w-3 h-3 opacity-50" />
                   )}
                 </button>
+                <span>•</span>
+                <a
+                  href="https://www.linkedin.com/in/shohaghossen8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 hover:text-stone-950 transition-colors text-[#0a66c2] hover:underline font-semibold"
+                >
+                  <LinkedinIcon className="w-3.5 h-3.5 text-[#0a66c2]" />
+                  <span>linkedin.com/in/shohaghossen8</span>
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
               </div>
             </div>
 
-            {/* Quick Action CTAs (Print / Download / Contact) */}
+            {/* Quick Action CTAs (Print / Download / Contact / LinkedIn) */}
             <div className="flex flex-wrap lg:flex-col gap-2.5 w-full lg:w-auto no-print">
+              <a
+                href="https://www.linkedin.com/in/shohaghossen8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#0a66c2] hover:bg-[#004182] text-white text-xs font-semibold tracking-wider transition-all shadow-md cursor-pointer"
+              >
+                <LinkedinIcon className="w-3.5 h-3.5" />
+                <span>LINKEDIN PROFILE</span>
+                <ExternalLink className="w-3 h-3 opacity-70" />
+              </a>
+
               <button
                 onClick={handlePrint}
                 className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-stone-900 text-stone-100 hover:bg-stone-800 text-xs font-semibold tracking-wider transition-all shadow-md cursor-pointer"

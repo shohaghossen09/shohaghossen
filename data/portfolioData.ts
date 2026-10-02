@@ -17,8 +17,8 @@ export const PERSONAL_INFO = {
   status: "Available for select client engagements & roles",
   email: "shohaghossen79886@gmail.com",
   socials: [
-    { label: "LinkedIn", url: "https://linkedin.com", handle: "linkedin profile" },
-    { label: "GitHub", url: "https://github.com", handle: "github.com/shohaghossen" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/shohaghossen8", handle: "shohaghossen8" },
+    { label: "GitHub", url: "https://github.com/shohaghossen09", handle: "shohaghossen09" },
     { label: "Email", url: "mailto:shohaghossen79886@gmail.com", handle: "shohaghossen79886@gmail.com" },
   ],
 };
