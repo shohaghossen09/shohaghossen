@@ -39,6 +39,7 @@ export default function AboutPage() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeStationIndex, setActiveStationIndex] = useState(0);
   const [activeProjectIdx, setActiveProjectIdx] = useState(0);
+  const [activeStepIdx, setActiveStepIdx] = useState(0);
   const [activeTypographyStyle, setActiveTypographyStyle] = useState<"editorial" | "brutalist" | "modern">("editorial");
   const [isParked, setIsParked] = useState(false);
 
@@ -1382,58 +1383,100 @@ export default function AboutPage() {
             className="absolute left-4 lg:left-[44%] right-4 lg:right-6 max-w-xl pointer-events-auto transition-all duration-300"
             style={{ top: "3720px" }}
           >
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
-              <div className="flex items-center gap-2 mb-2 text-stone-800 text-xs font-mono font-semibold">
-                <Sliders className="w-4 h-4 text-amber-700" />
-                <span>LEADERSHIP &amp; SPRINT DISCIPLINE</span>
+            <div className="glass-card p-6 sm:p-7 rounded-3xl border border-white/70 shadow-2xl backdrop-blur-xl bg-white/85">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-stone-800 text-xs font-mono font-semibold">
+                  <Sliders className="w-4 h-4 text-amber-700" />
+                  <span>LEADERSHIP &amp; SPRINT DISCIPLINE</span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-semibold">
+                  STEP {activeStepIdx + 1} OF {PROCESS_STEPS.length}
+                </span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-3 leading-tight">
+              <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-stone-950 mb-2 leading-tight">
                 From technical scoping
                 <span className="block text-amber-900 font-serif lowercase italic text-2xl">
                   to secure, on-time launch.
                 </span>
               </h2>
 
-              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-5">
-                Experienced as a Technical Team Lead managing developer task allocation, code reviews, backend integrations, and stakeholder alignment under tight deadlines.
+              <p className="text-xs sm:text-sm text-stone-800 leading-relaxed mb-4">
+                Managing developer task allocation, code reviews, backend integrations, and stakeholder alignment under tight sprint deadlines.
               </p>
 
-              <div className="space-y-2.5">
-                {PROCESS_STEPS.map((step) => (
-                  <div
+              {/* Interactive Step Switcher Tabs */}
+              <div className="flex items-center gap-1.5 p-1 rounded-full glass-card border border-stone-200/70 text-xs font-mono mb-4 overflow-x-auto scrollbar-none">
+                {PROCESS_STEPS.map((step, idx) => (
+                  <button
                     key={step.number}
-                    className="p-3.5 rounded-2xl bg-white/95 border border-stone-200/70 shadow-sm flex items-start gap-3"
+                    onClick={() => setActiveStepIdx(idx)}
+                    className={`px-2.5 py-1 rounded-full transition-all duration-200 cursor-pointer shrink-0 text-[11px] ${
+                      activeStepIdx === idx
+                        ? "bg-stone-900 text-white font-bold shadow-sm"
+                        : "text-stone-600 hover:text-stone-900 hover:bg-white/60"
+                    }`}
                   >
-                    <div className="w-7 h-7 rounded-xl bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">
-                      {step.number}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-bold text-xs text-stone-900 uppercase">
-                          {step.title}
-                        </span>
-                        <span className="text-[10px] font-mono text-stone-500">
-                          {step.phase}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-stone-700 leading-relaxed mb-1.5">
-                        {step.description}
-                      </p>
-                      <div className="flex flex-wrap gap-1">
-                        {step.deliverables.map((d) => (
-                          <span
-                            key={d}
-                            className="text-[9px] font-mono text-stone-600 bg-stone-100 px-1.5 py-0.5 rounded"
-                          >
-                            ✓ {d}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                    {step.number} {step.title}
+                  </button>
                 ))}
               </div>
+
+              {/* Active Step Card */}
+              {(() => {
+                const step = PROCESS_STEPS[activeStepIdx];
+                return (
+                  <div className="p-4 rounded-2xl bg-white/95 border border-stone-200/80 shadow-md">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                          {step.number}
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-stone-900 uppercase">
+                            {step.title}
+                          </div>
+                          <div className="text-[10px] font-mono text-stone-500">
+                            {step.phase}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => setActiveStepIdx((prev) => (prev > 0 ? prev - 1 : PROCESS_STEPS.length - 1))}
+                          className="px-2 py-1 rounded-lg text-xs font-mono text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer"
+                          aria-label="Previous step"
+                        >
+                          ‹ PREV
+                        </button>
+                        <button
+                          onClick={() => setActiveStepIdx((prev) => (prev < PROCESS_STEPS.length - 1 ? prev + 1 : 0))}
+                          className="px-2 py-1 rounded-lg text-xs font-mono text-stone-900 font-bold hover:bg-stone-100 transition-colors cursor-pointer"
+                          aria-label="Next step"
+                        >
+                          NEXT ›
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-stone-700 leading-relaxed mb-3">
+                      {step.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-2 border-t border-stone-100">
+                      {step.deliverables.map((d) => (
+                        <span
+                          key={d}
+                          className="text-[10px] font-mono text-stone-700 bg-stone-100/90 px-2 py-0.5 rounded-md"
+                        >
+                          ✓ {d}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
 

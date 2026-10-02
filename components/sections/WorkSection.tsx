@@ -41,10 +41,10 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
 
   return (
     <section
-      className="fixed inset-0 pointer-events-none flex flex-col justify-end lg:justify-center px-4 sm:px-8 md:px-12 xl:px-16 pb-24 sm:pb-20 lg:pb-0 z-20 transition-opacity duration-300"
+      className="fixed inset-0 pointer-events-none flex flex-col justify-between px-4 sm:px-8 md:px-12 xl:px-16 pt-20 sm:pt-24 lg:pt-24 pb-28 sm:pb-24 z-20 transition-opacity duration-300"
       style={{ opacity }}
     >
-      <div className="w-full flex flex-col justify-between h-full py-2">
+      <div className="w-full flex flex-col justify-between h-full">
         {/* Top Header & Indicator Tabs */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-3 pointer-events-auto">
           <div>

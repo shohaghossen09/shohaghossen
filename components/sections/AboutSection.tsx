@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MapPin, Award, Terminal, Heart, Cpu } from "lucide-react";
+import { MapPin, Award, Heart, Cpu } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
 interface AboutSectionProps {
@@ -81,17 +81,19 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ progress }) => {
 
         {/* Right Flank: Floating Digital Profile Artifacts (Desktop) */}
         <div className="hidden lg:flex w-full max-w-xs xl:max-w-sm flex-col gap-3.5 items-end pointer-events-auto">
+          {/* Card 1: Shohag Hossen's Verified Developer Passport */}
           <div className="w-full glass-card p-4 sm:p-5 rounded-2xl border border-white/75 shadow-xl">
             <div className="flex items-center justify-between border-b border-stone-200/70 pb-2.5 mb-2.5">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-stone-900 text-stone-100 flex items-center justify-center text-[10px] font-mono">
-                  AC
+                <div className="w-6 h-6 rounded-full bg-stone-900 text-stone-100 flex items-center justify-center text-[10px] font-mono font-bold">
+                  SH
                 </div>
                 <span className="text-xs font-mono font-bold text-stone-900">
-                  CREATIVE PASSPORT
+                  DEVELOPER PASSPORT
                 </span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                 ACTIVE
               </span>
             </div>
@@ -99,22 +101,23 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ progress }) => {
             <div className="space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-stone-100">
                 <span className="text-stone-500 font-mono">DISCIPLINE</span>
-                <span className="font-semibold text-stone-900">Design &amp; Dev</span>
+                <span className="font-semibold text-stone-900">Full-Stack Developer</span>
               </div>
               <div className="flex justify-between py-1 border-b border-stone-100">
                 <span className="text-stone-500 font-mono">LOCATION</span>
                 <span className="font-semibold text-stone-900 flex items-center gap-1">
                   <MapPin className="w-3 h-3 text-stone-600" />
-                  SF / Tokyo
+                  Dhaka, Bangladesh
                 </span>
               </div>
               <div className="flex justify-between py-1">
                 <span className="text-stone-500 font-mono">PHILOSOPHY</span>
-                <span className="font-semibold text-amber-800">Precision × Emotion</span>
+                <span className="font-semibold text-amber-800">Performance × Scalability</span>
               </div>
             </div>
           </div>
 
+          {/* Card 2: Core Conviction */}
           <div className="w-full glass-card p-3.5 rounded-xl border border-white/70 shadow-md">
             <div className="flex items-center gap-2 text-amber-700 text-xs font-mono mb-1">
               <Heart className="w-3.5 h-3.5 fill-amber-700/20" />
@@ -123,19 +126,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ progress }) => {
             <p className="text-xs text-stone-700 leading-snug italic font-serif">
               &ldquo;Great code without taste is hollow. Great design without performance is unusable.&rdquo;
             </p>
-          </div>
-
-          <div className="w-full glass-dark p-3.5 rounded-xl font-mono text-[11px] shadow-lg">
-            <div className="flex items-center gap-1.5 text-stone-400 text-[10px] mb-1.5 border-b border-stone-700 pb-1">
-              <Terminal className="w-3 h-3" />
-              <span>alexander@macbook: ~</span>
-            </div>
-            <div className="text-stone-300">
-              <span className="text-amber-400">$</span> stack --inspect
-            </div>
-            <div className="text-stone-400 text-[10px] mt-0.5">
-              &gt; React 19, Next.js, WebGL, GSAP
-            </div>
           </div>
         </div>
       </div>
